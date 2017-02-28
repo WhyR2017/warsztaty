@@ -1,6 +1,6 @@
 # Analiza danych zebranych w oparciu o złożone schematy doboru próby z wykorzystaniem pakietu survey
 
-(Tomasz Żółtak, Instytut Badań Edukacyjnych )[https://github.com/tzoltak]
+(Tomasz Żółtak, Instytut Badań Edukacyjnych)[https://github.com/tzoltak]
 
 
 ## Opis warsztatu
