@@ -31,3 +31,17 @@ opisuj <- function(wiersz, responses, plik){
 dir.create('310_Sondaze/sesja_popoludniowa/')
 file.create('310_Sondaze/sesja_popoludniowa/README.md')
 opisuj(21, responses, 'Sondaze/sesja_popoludniowa/README.md')
+dir.create('311_Wydajnosc_Web-Harvesting/sesja_popoludniowa/', recursive = T)
+dir.create('311_Wydajnosc_Web-Harvesting/sesja_poranna/', , recursive = T)
+file.create('311_Wydajnosc_Web-Harvesting/sesja_popoludniowa/README.md')
+file.create('311_Wydajnosc_Web-Harvesting/sesja_poranna/README.md')
+opisuj(6, responses, '311_Wydajnosc_Web-Harvesting/sesja_poranna/README.md')
+opisuj(10, responses, '311_Wydajnosc_Web-Harvesting/sesja_popoludniowa/README.md')
+
+
+dir.create('312_Enterprise/sesja_popoludniowa/', recursive = T)
+dir.create('312_Enterprise/sesja_poranna/', recursive = T)
+file.create('312_Enterprise/sesja_popoludniowa/README.md')
+file.create('312_Enterprise/sesja_poranna/README.md')
+opisuj(2, responses, '312_Enterprise/sesja_poranna/README.md')
+opisuj(4, responses, '312_Enterprise/sesja_popoludniowa/README.md')
