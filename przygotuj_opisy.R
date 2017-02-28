@@ -45,3 +45,11 @@ file.create('312_Enterprise/sesja_popoludniowa/README.md')
 file.create('312_Enterprise/sesja_poranna/README.md')
 opisuj(2, responses, '312_Enterprise/sesja_poranna/README.md')
 opisuj(4, responses, '312_Enterprise/sesja_popoludniowa/README.md')
+
+
+dir.create('313_Uczenie_Maszynowa_Narzedzia/sesja_popoludniowa/', recursive = T)
+dir.create('313_Uczenie_Maszynowa_Narzedzia/sesja_poranna/', recursive = T)
+file.create('313_Uczenie_Maszynowa_Narzedzia/sesja_popoludniowa/README.md')
+file.create('313_Uczenie_Maszynowa_Narzedzia/sesja_poranna/README.md')
+opisuj(13, responses, '313_Uczenie_Maszynowa_Narzedzia/sesja_poranna/README.md')
+opisuj(9, responses, '313_Uczenie_Maszynowa_Narzedzia/sesja_popoludniowa/README.md')
