@@ -61,3 +61,12 @@ file.create('314_Uczenie_Maszynowa_Metody/sesja_popoludniowa/README.md')
 file.create('314_Uczenie_Maszynowa_Metody/sesja_poranna/README.md')
 opisuj(15, responses, '314_Uczenie_Maszynowa_Metody/sesja_poranna/README.md')
 opisuj(11, responses, '314_Uczenie_Maszynowa_Metody/sesja_popoludniowa/README.md')
+
+
+
+dir.create('315_Wizualizacje/sesja_popoludniowa/', recursive = T)
+dir.create('315_Wizualizacje/sesja_poranna/', recursive = T)
+file.create('315_Wizualizacje/sesja_popoludniowa/README.md')
+file.create('315_Wizualizacje/sesja_poranna/README.md')
+opisuj(19, responses, '315_Wizualizacje/sesja_poranna/README.md')
+opisuj(12, responses, '315_Wizualizacje/sesja_popoludniowa/README.md')
