@@ -78,3 +78,11 @@ file.create('316_Analiza_Wielowymiarowa/sesja_popoludniowa/README.md')
 file.create('316_Analiza_Wielowymiarowa/sesja_poranna/README.md')
 opisuj(5, responses, '316_Analiza_Wielowymiarowa/sesja_poranna/README.md')
 opisuj(14, responses, '316_Analiza_Wielowymiarowa/sesja_popoludniowa/README.md')
+
+
+dir.create('317_Grafy_Analiza_Tekstu/sesja_popoludniowa/', recursive = T)
+dir.create('317_Grafy_Analiza_Tekstu/sesja_poranna/', recursive = T)
+file.create('317_Grafy_Analiza_Tekstu/sesja_popoludniowa/README.md')
+file.create('317_Grafy_Analiza_Tekstu/sesja_poranna/README.md')
+opisuj(5, responses, '317_Grafy_Analiza_Tekstu/sesja_poranna/README.md')
+opisuj(16, responses, '317_Grafy_Analiza_Tekstu/sesja_popoludniowa/README.md')
