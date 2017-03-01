@@ -1,4 +1,4 @@
-# mirt: skalowanie odpowiedzi lepsze niż PCA
+# mirt: skalowanie odpowiedzi lepsze niż PCA
 
 [Piotr Migdał, deepsense.io / freelancer](http://p.migdal.pl/)
 
