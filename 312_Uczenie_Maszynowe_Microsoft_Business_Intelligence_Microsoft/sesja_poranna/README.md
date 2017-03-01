@@ -1,6 +1,6 @@
 # MicrosoftML - State of the art Machine Learning Microsoft
 
-[Łukasz Grala, Politechnika Poznańska Wydział Informatyki / TIDK - Data Scientist as a Services](https://mvp.microsoft.com/en-us/PublicProfile/4029183?fullName=Lukasz%20Grala   http://dsaas.co  mam jeszcze blog http://grala.it ale migruje go teraz)
+[Łukasz Grala, Politechnika Poznańska Wydział Informatyki / TIDK - Data Scientist as a Services](https://mvp.microsoft.com/en-us/PublicProfile/4029183?fullName=Lukasz%20Grala)
 
 ## Opis warsztatu 
 
