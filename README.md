@@ -1,4 +1,3 @@
-# TODO: spis treści
 
 # Sondaże - sala 310
 
@@ -42,7 +41,7 @@ Sesja popołudniowa:
 - Tytuł: [Zastosowanie R w Power BI](https://github.com/whyR-conference/warsztaty/tree/master/312_Uczenie_Maszynowe_Microsoft_Business_Intelligence_Microsoft/sesja_popoludniowa)
 - Prowadzący: [Dawid Detko, Predica]()
 
-# Uczenie Maszynowe, Narzędzia
+# Uczenie Maszynowe, Narzędzia - sala 313
 
 Sesja poranna:
 
@@ -56,7 +55,7 @@ Sesja popołudniowa:
 - Tytuł: [Kombajn do uczenia maszynowego - MLR w praktyce](https://github.com/whyR-conference/warsztaty/tree/master/313_Uczenie_Maszynowe_Narzedzia/sesja_popoludniowa)
 - Prowadzący: [Paweł Zawistowski, Wydział EiTI, PW]()
 
-# Uczenie Maszynowe, Metody
+# Uczenie Maszynowe, Metody - sala 314
 
 Sesja poranna:
 
@@ -70,7 +69,7 @@ Sesja popołudniowa:
 - Tytuł: [XGBoost rządzi](https://github.com/whyR-conference/warsztaty/tree/master/314_Uczenie_Maszynowe_Metody/sesja_popoludniowa)
 - Prowadzący: [Vladimir Alekseichenko, GE Healthcare](http://dataworkshop.eu)
 
-# Wizualizacje
+# Wizualizacje - sala 315
 
 Sesja poranna:
 
@@ -84,7 +83,7 @@ Sesja popołudniowa:
 - Tytuł: [Efektywna i efektowna wizualizacja w ggplot2](https://github.com/whyR-conference/warsztaty/tree/master/315_Wizualizacje/sesja_popoludniowa)
 - Prowadzący: [Piotr Ćwiakowski, Uniwersytet Warszawski](www.labmasters.pl)
 
-# Analiza wielowymiarowa
+# Analiza wielowymiarowa - sala 316
 
 Sesja poranna:
 
@@ -98,7 +97,7 @@ Sesja popołudniowa:
 - Tytuł: [mirt: skalowanie odpowiedzi lepsze niż PCA](https://github.com/whyR-conference/warsztaty/tree/master/316_Analiza_Wielowymiarowa/sesja_popoludniowa)
 - Prowadzący: [Piotr Migdał, deepsense.io / freelancer](http://p.migdal.pl/)
 
-# Grafy / Analiza Tekstu
+# Grafy / Analiza Tekstu - sala 317
 
 Sesja poranna:
 
