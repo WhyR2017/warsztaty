@@ -13,18 +13,18 @@ Sesja popołudniowa:
 - Tytuł: [Analiza danych zebranych w oparciu o złożone schematy doboru próby z wykorzystaniem pakietu survey](https://github.com/whyR-conference/warsztaty/tree/master/310_Sondaze/sesja_popoludniowa)
 - Prowadzący: [Tomasz Żółtak, Instytut Badań Edukacyjnych](https://github.com/tzoltak)
 
-# Wydajność / Web-harvesting - sala 311
+# Web-harvesting - sala 311
 
 Sesja poranna:
 
 - Termin: 9:00 - 12:30, 27.09.2017
-- Tytuł: [Kiedy brakuje wydajności... R i C++ = Rcpp](https://github.com/whyR-conference/warsztaty/tree/master/311_Wydajnosc_Web-Harvesting/sesja_poranna)
-- Prowadzący: [Zygmunt  Zawadzki, zstat](zstat.pl)
+- Tytuł: [Web scraping w R i nie tylko](https://github.com/whyR-conference/warsztaty/tree/master/311_Web_Harvesting/sesja_poranna)
+- Prowadzący: [Magdalena Mazurek, Koło Naukowe Data Science](http://datascience.mini.pw.edu.pl/)
 
 Sesja popołudniowa:
 
 - Termin: 14:00 - 17:30, 27.09.2017
-- Tytuł: [Pakiet rvest, czyli web scrapingu wybrane przypadki](https://github.com/whyR-conference/warsztaty/tree/master/311_Wydajnosc_Web-Harvesting/sesja_popoludniowa)
+- Tytuł: [Pakiet rvest, czyli web scrapingu wybrane przypadki](https://github.com/whyR-conference/warsztaty/tree/master/311_Web_Harvesting/sesja_popoludniowa)
 - Prowadzący: [Bartosz Sękiewicz, HTA Consulting](https://github.com/bsekiewicz)
 
 # Uczenie Maszynowe, Microsoft / Self-Service BI, Microsoft - sala 312
@@ -110,3 +110,18 @@ Sesja popołudniowa:
 - Termin: 14:00 - 17:30, 27.09.2017
 - Tytuł: [Text mining w R](https://github.com/whyR-conference/warsztaty/tree/master/317_Grafy_Analiza_Tekstu/sesja_popoludniowa)
 - Prowadzący: [Norbert Ryciak, Politechnika Warszawska, Wydział MiNI]()
+
+
+# Wydajność
+
+Sesja poranna:
+
+- Termin: 9:00 - 12:30, 27.09.2017
+- Tytuł: [Kiedy brakuje wydajności... R i C++ = Rcpp](https://github.com/whyR-conference/warsztaty/tree/master/318_Wydajnosc/sesja_poranna)
+- Prowadzący: [Zygmunt  Zawadzki, zstat](zstat.pl)
+
+Sesja popołudniowa:
+
+- Termin: 14:00 - 17:30, 27.09.2017
+- Tytuł: [Nie pisz kodu, pisz prozę - wprowadzenie do pakietu dplyr](https://github.com/whyR-conference/warsztaty/tree/master/318_Wydajnosc/sesja_popoludniowa)
+- Prowadzący: [Bartłomiej Tartanus, OSA/Sages]()
