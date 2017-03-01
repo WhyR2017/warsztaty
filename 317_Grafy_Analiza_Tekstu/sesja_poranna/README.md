@@ -1,44 +1,42 @@
-# Wróżenie z punktów - ordynacja w eksploracji danych
+# Pakiet igraph - bo grafy są wszędzie tylko dyskretnie
 
-[Marcin K. Dyderski, Instytut Dendrologii Polskiej Akademii Nauk]()
+[Michał Wojtasiewicz, Instytut Podstaw Informatyki PAN]()
 
 ## Opis warsztatu 
 
-Warsztaty zakładają wprowadzenie do technik ordynacji - uporządkowania punktów w przestrzeni cech i redukcji wielowymiarowości do postaci zdatnej do wyrażenia za pomocą prostego wykresu. Ordynacja może być sama w sobie metodą do wykazania pewnych prawidłowości, może też jednak stanowić źródło do wyszukiwania zależności, które chcemy/musimy przedstawić później w bardziej wysublimowany sposób.
-
-Celem warsztatów jest wskazanie możliwości zastosowania podstawowych technik ordynacyjnych do wyszukania zależności pomiędzy danymi. Planuję podczas warsztatów przeanalizować wraz z Uczestnikami trzy zbiory danych, w których będziemy szukać zależności związanych z problemem analitycznym. Oprócz tego chciałbym krótko omówić przykłady zastosowania tego typu analiz oraz najczęściej popełniane błędy.
-
-Uczestnicy podczas warsztatów nauczą się:
-1. jak przygotować dane do analiz z zastosowaniem ordynacji
-2. w jaki sposób wykonać analizę głównych składowych (PCA), analizę korespondecji (CA) oraz kanoniczną analizę korespondencji (CCA) 
-3. w jakich warunkach dana analiza może być zastosowana, jakie ma wady oraz jakie ma ograniczenia
-4. w jaki sposób interpretować uzyskane wyniki oraz jak przedstawić je graficznie w sposób przystępny i estetyczny
-
-
+Celem warsztatu jest zaznajomienie uczestników z pakietem igraph oraz podstawowymi technikami uczenia maszynowego w dziedzinie teorii grafów. Uczestnicy poznają metody zapisu struktury grafu, podstawowe operacje na grafach (np. dodawanie i odejmowanie wierzchołków oraz krawędzi, scalanie oraz dzielenie grafów), podstawowe statystyki opisu grafów (np. najkrótsza i najdłuższa droga, planarność, rozkład stopni wierzchołków, średnica grafu, cykliczność, clustering coefficient, najlżejsze drzewo rozpinające). Uczestnicy zapoznają sie z najczęściej używanymi metodami uczenia maszynowego w grafach (np. analiza skupień, systemy rekomendacyjne, kolorowanie grafów).
 
 ## Plan warsztatu 
 
-1. Czym jest ordynacja - wprowadzenie
-2. Podział metod, zastosowania i przykłady
-3. Przygotowanie danych, transformacje
-4. Przypadek 1 - czym się różnią drzewa?
-5. Przypadek 2 - co wpływa na naszą ocenę piwa?
-6. Przypadek 3 - czym się różnią od siebie miasta?
-7. Podsumowanie + informacje gdzie szukać dalej
+1) Wprowadzenie definicji metryki dyskretnej, wierzchołka, krawędzi, grafu, ścieżki, drogi, cyklu.
+2) Wprowadzenie definicji stopnia wierzchołka, wagi krawędzi, planarności i grubości grafu.
+3) Wprowadzanie definicji grafu pustego, pełnego acyklicznego, dwudzielnego, dopełnienia grafu.
+4) Wprowadzenie metod zapisu grafu: macierz sąsiedztwa, lista krawędzi, macierz incydencji.
+5) Wczytanie przykładowego grafu i jego wyświetlenie.
+6) Nadanie nazw wierzchołkom oraz wyświetlenie różnych formatów zapisu grafu: macierzy sąsiedztwa, listy krawędzi, macierzy incydencji.
+7) Wyliczenie podstawowych statystyk wczytanego grafu.
+8) Zapis grafu do pliku.
+9) Wygenerownie grafów o zadanych własnościach (np. graf pełny, dwudzielny, losowy).
+10) Policzenie statystyk i analiza porównawcza.
+11) Scalenie oraz podzielenie grafów według zadanego kryterium.
+12) Wprowadzenie definicji sąsiedztwa oraz wyznaczenie drzewa rozpinającego.
+13) Przedstawienie problemu analizy skupień oraz algorytmu Louvain.
+14) Budowa prostego systemu rekomendacyjnego na wygenerowanym grafie dwudzielnym.
+15) Przedstawienie jednego zastosowania kolorowania grafów (np. kolorowanie zwarte do szeregowania zadań).
 
 ## Wymagane pakiety 
 
 
 
-vegan, ggplot2, gridExtra, scales
+"igraph", "Matrix", "visNetwork"
 
 ## Wymagane od uczestników umiejętności i wiedza 
 
-Podstawowa znajomość R: operacje na data.frame'ach, macierzach i listach, umiejętność tworzenia wykresów w pakiecie ggplot2
+Podstawowa znajomość języka R oraz logiczne myślenie.
 
 ## Wymagania wstępne do wykonania przed warsztatem 
 
-komputer z R oraz zainstalowanymi pakietami
+Pobranie przykładowego grafu oraz wymaganych pakietów.
 
 ## Język warsztatu 
 
