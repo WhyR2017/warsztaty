@@ -70,3 +70,11 @@ file.create('315_Wizualizacje/sesja_popoludniowa/README.md')
 file.create('315_Wizualizacje/sesja_poranna/README.md')
 opisuj(19, responses, '315_Wizualizacje/sesja_poranna/README.md')
 opisuj(12, responses, '315_Wizualizacje/sesja_popoludniowa/README.md')
+
+
+dir.create('316_Analiza_Wielowymiarowa/sesja_popoludniowa/', recursive = T)
+dir.create('316_Analiza_Wielowymiarowa/sesja_poranna/', recursive = T)
+file.create('316_Analiza_Wielowymiarowa/sesja_popoludniowa/README.md')
+file.create('316_Analiza_Wielowymiarowa/sesja_poranna/README.md')
+opisuj(5, responses, '316_Analiza_Wielowymiarowa/sesja_poranna/README.md')
+opisuj(14, responses, '316_Analiza_Wielowymiarowa/sesja_popoludniowa/README.md')
