@@ -32,13 +32,13 @@ Sesja popołudniowa:
 Sesja poranna:
 
 - Termin: 9:00 - 12:30, 27.09.2017
-- Tytuł: [MicrosoftML - State of the art Machine Learning Microsoft](https://github.com/whyR-conference/warsztaty/tree/master/311_Wydajnosc_Web-Harvesting/sesja_poranna)
+- Tytuł: [MicrosoftML - State of the art Machine Learning Microsoft](https://github.com/whyR-conference/warsztaty/tree/master/312_Uczenie_Maszynowe_Microsoft_Self_BI_Services/sesja_poranna)
 - Prowadzący: [Łukasz Grala, Politechnika Poznańska Wydział Informatyki / TIDK - Data Scientist as a Services](https://mvp.microsoft.com/en-us/PublicProfile/4029183?fullName=Lukasz%20Grala)
 
 Sesja popołudniowa:
 
 - Termin: 14:00 - 17:30, 27.09.2017
-- Tytuł: [Zastosowanie R w Power BI](https://github.com/whyR-conference/warsztaty/tree/master/312_Uczenie_Maszynowe_Microsoft_Business_Intelligence_Microsoft/sesja_popoludniowa)
+- Tytuł: [Zastosowanie R w Power BI](https://github.com/whyR-conference/warsztaty/tree/master/312_Uczenie_Maszynowe_Microsoft_Self_BI_Services/sesja_popoludniowa)
 - Prowadzący: [Dawid Detko, Predica]()
 
 # Uczenie Maszynowe, Narzędzia - sala 313
