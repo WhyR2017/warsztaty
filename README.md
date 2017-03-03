@@ -60,14 +60,14 @@ Sesja popołudniowa:
 Sesja poranna:
 
 - Termin: 9:00 - 12:30, 27.09.2017
-- Tytuł: [Klasyfikacja wieloetykietowa z pakietem R](https://github.com/whyR-conference/warsztaty/tree/master/314_Uczenie_Maszynowe_Metody)
-- Prowadzący: [Paweł Teisseyre, Instytut Podstaw Informatyki PAN](http://www.ipipan.eu/~teisseyrep/)
+- Tytuł: [XGBoost rządzi](https://github.com/whyR-conference/warsztaty/tree/master/314_Uczenie_Maszynowe_Metody/sesja_poranna)
+- Prowadzący: [Vladimir Alekseichenko, GE Healthcare](http://dataworkshop.eu)
 
 Sesja popołudniowa:
 
 - Termin: 14:00 - 17:30, 27.09.2017
-- Tytuł: [XGBoost rządzi](https://github.com/whyR-conference/warsztaty/tree/master/314_Uczenie_Maszynowe_Metody/sesja_popoludniowa)
-- Prowadzący: [Vladimir Alekseichenko, GE Healthcare](http://dataworkshop.eu)
+- Tytuł: [Klasyfikacja wieloetykietowa z pakietem R](https://github.com/whyR-conference/warsztaty/tree/master/314_Uczenie_Maszynowe_Metody/sesja_popoludniowa)
+- Prowadzący: [Paweł Teisseyre, Instytut Podstaw Informatyki PAN](http://www.ipipan.eu/~teisseyrep/)
 
 # Wizualizacje - sala 315
 
