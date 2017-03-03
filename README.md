@@ -18,14 +18,14 @@ Sesja popołudniowa:
 Sesja poranna:
 
 - Termin: 9:00 - 12:30, 27.09.2017
-- Tytuł: [Web scraping w R i nie tylko](https://github.com/whyR-conference/warsztaty/tree/master/311_Web_Harvesting/sesja_poranna)
-- Prowadzący: [Magdalena Mazurek, Koło Naukowe Data Science](http://datascience.mini.pw.edu.pl/)
+- Tytuł: [Pakiet rvest, czyli web scrapingu wybrane przypadki](https://github.com/whyR-conference/warsztaty/tree/master/311_Web_Harvesting/sesja_poranna)
+- Prowadzący: [Bartosz Sękiewicz, HTA Consulting](https://github.com/bsekiewicz)
 
 Sesja popołudniowa:
 
 - Termin: 14:00 - 17:30, 27.09.2017
-- Tytuł: [Pakiet rvest, czyli web scrapingu wybrane przypadki](https://github.com/whyR-conference/warsztaty/tree/master/311_Web_Harvesting/sesja_popoludniowa)
-- Prowadzący: [Bartosz Sękiewicz, HTA Consulting](https://github.com/bsekiewicz)
+- Tytuł: [Web scraping w R i nie tylko](https://github.com/whyR-conference/warsztaty/tree/master/311_Web_Harvesting/sesja_popoludniowa)
+- Prowadzący: [Magdalena Mazurek, Koło Naukowe Data Science](http://datascience.mini.pw.edu.pl/)
 
 # Uczenie Maszynowe, Microsoft / Self-Service BI, Microsoft - sala 312
 

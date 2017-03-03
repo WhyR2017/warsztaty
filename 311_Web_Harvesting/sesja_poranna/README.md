@@ -1,28 +1,32 @@
-# Web scraping w R i nie tylko
+# Pakiet rvest, czyli web scrapingu wybrane przypadki
 
-[Magdalena Mazurek, Koło Naukowe Data Science](http://datascience.mini.pw.edu.pl/)
+[Bartosz Sękiewicz, HTA Consulting](https://github.com/bsekiewicz)
 
 ## Opis warsztatu 
 
-Celem warsztatu jest zaprezentowanie możliwości pakietu RSelenium. Przedstawienie krótko jego wad oraz zalet. Uczestnicy z warsztatów dowiedzą się jak scrapować informacje ze stron internetowych wykorzystujących javascript oraz czemu warto przy tym używać zewnętrznej aplikacji PhantomJS.
+Celem warsztatu jest pokazanie z jakimi problemami możemy spotkać się podczas scrapowania stron www przy użyciu pakietu rvest. Warsztat pozwoli uczestnikom na uświadomienie sobie tego jak różnorodne mogą być strony internetowe (w kontekście ich konstrukcji). Dzięki poznaniu niuansów związanych z web scrapingiem możliwe będzie zaoszczędzenie w przyszłości sporej ilości czasu i nerwów. Z uwagi na ograniczoną ilość czasu pominiemy temat scrapowania stron obsługiwanych przez skrypty JS (wymaga to zastosowania dodatkowego oprogramowania jak PhantomJS, lub innego typu webscrapera jak RSelenium).
 
 ## Plan warsztatu 
 
-Warsztaty rozpoczniemy od zaznajomienia uczestników z zasadą działania RSelenium oraz czym różni się od pakietu rvest. Zaczniemy od korzystania z RSelenium z użyciem klasycznej przeglądrki. W pierwszej kolejności zajmiemy się krótko scrapowaniem stron statycznych, niekorzystajacych z javascriptu jako prezentacja, że tradycyjne scrapowanie jest również możliwe, powiemy jednak czemu jest to nieefektywne. Następnie przejdziemy do części głównej, tj. scrapwowania stron korzystajacych z javascriptu, powiemy w tym miejscu czemu RSelenium jest możliwe do wykonywania tego. Na próbnej stronie pokażemy w jaki sposób korzystamy z pakietu. Na koniec powiemy o możliwości użycia aplikacji PhaontomJS.
+Podczas spotkania postaramy się rozwiązać problemy z pobieraniem danych ze stron zaproponowanych przez uczestników. Skupimy się na trzech aspektach: 
+1. piękno języka css, czyli wyciąganie informacji z kodu strony (m.in. tagi, klasy, id, rodzice i dzieci, sąsiedzi); 
+2. komunikacja ze stronami oraz nawigacja po nich (m.in. formularze, POST i GET);
+3. API, czyli jak zaoszczędzić sobie czas (niestety nie zawsze jest to prawdziwe).
+
 
 ## Wymagane pakiety 
 
 
 
-RSelenium
+rvest (wystarczy zapoznanie się z opisem pakietu i jego zrozumienie, https://github.com/hadley/rvest)
 
 ## Wymagane od uczestników umiejętności i wiedza 
 
-Podstawowa znajomość R i HTML.
+Podstawowa znajomość html, css. Mile widziana znajomość wyrażeń regularnych.
 
 ## Wymagania wstępne do wykonania przed warsztatem 
 
-Instalacja aplikacji PhantomJS, najnowszej wersji Java
+Przesłanie co najmniej trzech propozycji stron, którymi uczestnik byłby zainteresowany pod kątem web scrapingu. W zależności od przesłanych propozycji być może będzie konieczne założenie konta developerskiego dla wybranych serwisów (np. facebook, google).
 
 ## Język warsztatu 
 
