@@ -1,4 +1,4 @@
-# Analiza danych zebranych w oparciu o złożone schematy doboru próby z wykorzystaniem pakietu survey
+# Złożone schematy doboru próby - pakiet survey
 
 [Tomasz Żółtak, Instytut Badań Edukacyjnych](https://github.com/tzoltak)
 

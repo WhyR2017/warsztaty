@@ -10,7 +10,7 @@ Sesja poranna:
 Sesja popołudniowa:
 
 - Termin: 14:00 - 17:30, 27.09.2017
-- Tytuł: [Analiza danych zebranych w oparciu o złożone schematy doboru próby z wykorzystaniem pakietu survey](https://github.com/whyR-conference/warsztaty/tree/master/310_Sondaze/sesja_popoludniowa)
+- Tytuł: [Złożone schematy doboru próby - pakiet survey](https://github.com/whyR-conference/warsztaty/tree/master/310_Sondaze/sesja_popoludniowa)
 - Prowadzący: [Tomasz Żółtak, Instytut Badań Edukacyjnych](https://github.com/tzoltak)
 
 # Web-harvesting - sala 311
