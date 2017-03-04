@@ -1,6 +1,6 @@
 # Kombajn do uczenia maszynowego - MLR w praktyce
 
-[Paweł Zawistowski, Politechnika Warszawska, Wydział EiTI, AdForm](https://pzawistowski.github.io/about)
+[Paweł Zawistowski, Politechnika Warszawska, Wydział EiTI / AdForm](https://pzawistowski.github.io/about)
 
 ## Opis warsztatu 
 
