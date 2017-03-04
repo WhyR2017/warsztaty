@@ -8,15 +8,14 @@ Celem warsztatu jest pokazanie z jakimi problemami możemy spotkać się podczas
 
 ## Plan warsztatu 
 
-Podczas spotkania postaramy się rozwiązać problemy z pobieraniem danych ze stron zaproponowanych przez uczestników. Skupimy się na trzech aspektach: 
+Podczas spotkania postaramy się rozwiązać problemy z pobieraniem danych ze stron zaproponowanych przez uczestników. Skupimy się na trzech aspektach:
+
 1. piękno języka css, czyli wyciąganie informacji z kodu strony (m.in. tagi, klasy, id, rodzice i dzieci, sąsiedzi); 
 2. komunikacja ze stronami oraz nawigacja po nich (m.in. formularze, POST i GET);
 3. API, czyli jak zaoszczędzić sobie czas (niestety nie zawsze jest to prawdziwe).
 
 
 ## Wymagane pakiety 
-
-
 
 rvest (wystarczy zapoznanie się z opisem pakietu i jego zrozumienie, https://github.com/hadley/rvest)
 
