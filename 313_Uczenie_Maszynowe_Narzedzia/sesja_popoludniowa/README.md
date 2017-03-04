@@ -1,6 +1,6 @@
-# Kombajn do uczenia maszynowego - MLR w praktyce / All-in-one machine learning framework - MLR in practice
+# Kombajn do uczenia maszynowego - MLR w praktyce
 
-[Paweł Zawistowski, Wydział EiTI, PW]()
+[Paweł Zawistowski, Politechnika Warszawska, Wydział EiTI / AdForm](https://pzawistowski.github.io/about)
 
 ## Opis warsztatu 
 
@@ -8,18 +8,16 @@ Celem warsztatu jest przedstawienie szerokich możliwości jakie daje pakiet MLR
 
 ## Plan warsztatu 
 
-1. Ogólne wprowadzenie do pakietu, przygotowanie środowiska MLR - 0.5h.
-2. Przygotowanie danych do rozwiązywania naszego zadania (klasyfikacja, regresja, ...) - 0.5h.
-3. Wybór modelu, strojenie parametrów - 0.5h.
-4. Diagnostyka i wizualizacja wyników - 0.5h.
-5. Rozszerzanie MLR o własny algorytm - 0.5h.
-6. Inne ciekawe elementy pakietu, podsumowanie - 0.5h.
+1. Ogólne wprowadzenie do pakietu, przygotowanie środowiska MLR.
+2. Przygotowanie danych do rozwiązywania naszego zadania (klasyfikacja, regresja, ...).
+3. Wybór modelu, strojenie parametrów.
+4. Diagnostyka i wizualizacja wyników.
+5. Rozszerzanie MLR o własny algorytm.
+6. Inne ciekawe elementy pakietu, podsumowanie.
 
 ## Wymagane pakiety 
 
-
-
-tidyverse, mlr - udostępniony zostanie obraz dockera ze wszystkim co potrzebne + RStudio 
+W ramach warsztatu korzystać będziemy z `mlr` oraz `tidyverse`. Udostępniony zostanie również obraz dockera ze wszystkim co potrzebne + RStudio.
 
 ## Wymagane od uczestników umiejętności i wiedza 
 
@@ -28,8 +26,8 @@ tidyverse, mlr - udostępniony zostanie obraz dockera ze wszystkim co potrzebne 
 
 ## Wymagania wstępne do wykonania przed warsztatem 
 
-Ściągnięcie dockera i instalacja udostępnionego obrazu.
+Intalacja pakietów R lub ściągnięcie dockera i uruchomienie udostępnionego obrazu.
 
 ## Język warsztatu 
 
-angielski
+polski

@@ -53,7 +53,7 @@ Sesja popołudniowa:
 
 - Termin: 14:00 - 17:30, 27.09.2017
 - Tytuł: [Kombajn do uczenia maszynowego - MLR w praktyce](https://github.com/whyR-conference/warsztaty/tree/master/313_Uczenie_Maszynowe_Narzedzia/sesja_popoludniowa)
-- Prowadzący: [Paweł Zawistowski, Wydział EiTI, PW]()
+- Prowadzący: [Paweł Zawistowski, Politechnika Warszawska, Wydział EiTI / AdForm](https://pzawistowski.github.io/about)
 
 # Uczenie Maszynowe, Metody - sala 314
 
