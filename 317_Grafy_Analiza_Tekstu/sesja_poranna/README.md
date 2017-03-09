@@ -1,28 +1,20 @@
-# Pakiet igraph - bo grafy są wszędzie tylko dyskretnie
+# Social Network Analysis w R
 
 [Michał Wojtasiewicz, Instytut Podstaw Informatyki PAN]()
 
 ## Opis warsztatu 
 
-Celem warsztatu jest zaznajomienie uczestników z pakietem igraph oraz podstawowymi technikami uczenia maszynowego w dziedzinie teorii grafów. Uczestnicy poznają metody zapisu struktury grafu, podstawowe operacje na grafach (np. dodawanie i odejmowanie wierzchołków oraz krawędzi, scalanie oraz dzielenie grafów), podstawowe statystyki opisu grafów (np. najkrótsza i najdłuższa droga, planarność, rozkład stopni wierzchołków, średnica grafu, cykliczność, clustering coefficient, najlżejsze drzewo rozpinające). Uczestnicy zapoznają sie z najczęściej używanymi metodami uczenia maszynowego w grafach (np. analiza skupień, systemy rekomendacyjne, kolorowanie grafów).
+Celem warsztatu jest zaznajomienie uczestników z tematyką analizy danych w sieciach społecznych. Ćwiczenia praktyczne zostaną przeprowadzone w głównej mierze przy użyciu pakietu igraph. Dziedzina Social Network Analysis (SNA) jest teraz jedną z najprężniej rozwijających się dziedzin uczenia maszynowego. Z racji powszechności występowania sieci społecznych (np. Facebook, Instagram, LinkedIn, problemy optymalizacyjne, sieci systemów rekomendujących, sieć połączeń mailowych) zapotrzebowanie na algorytmy i coraz bardziej zaawansowane rozwiązania stale wzrasta. 
+Naturalną metodą zapisu sieci jest graf czyli zbiór wierzchołków i krawędzi. Dzięki łatwej w konstrukcji strukturze, zapis grafowy pozwala na skuteczne rozwiązywanie szerokiego zakresu problemów data miningowych. Na zajęciach warsztatowych uczestnicy zapoznają się z tematyką SNA, głównym problemami oraz popularnymi rozwiązaniami tych problemów. Nauczą się wyznaczać grupy podobnych elementów sieci (np. grupa znajomych), kluczowe ze względu przesyłania informacji elementy sieci (np. bottlenecki), podgrupy elementów pozornie niepowiązanych (np. grupa klientów kupujących ten sam produkt) oraz użycia sieci do szeregowania zadań (kolorowanie zwarte). 
 
 ## Plan warsztatu 
 
-1) Wprowadzenie definicji metryki dyskretnej, wierzchołka, krawędzi, grafu, ścieżki, drogi, cyklu.
-2) Wprowadzenie definicji stopnia wierzchołka, wagi krawędzi, planarności i grubości grafu.
-3) Wprowadzanie definicji grafu pustego, pełnego acyklicznego, dwudzielnego, dopełnienia grafu.
-4) Wprowadzenie metod zapisu grafu: macierz sąsiedztwa, lista krawędzi, macierz incydencji.
-5) Wczytanie przykładowego grafu i jego wyświetlenie.
-6) Nadanie nazw wierzchołkom oraz wyświetlenie różnych formatów zapisu grafu: macierzy sąsiedztwa, listy krawędzi, macierzy incydencji.
-7) Wyliczenie podstawowych statystyk wczytanego grafu.
-8) Zapis grafu do pliku.
-9) Wygenerownie grafów o zadanych własnościach (np. graf pełny, dwudzielny, losowy).
-10) Policzenie statystyk i analiza porównawcza.
-11) Scalenie oraz podzielenie grafów według zadanego kryterium.
-12) Wprowadzenie definicji sąsiedztwa oraz wyznaczenie drzewa rozpinającego.
-13) Przedstawienie problemu analizy skupień oraz algorytmu Louvain.
-14) Budowa prostego systemu rekomendacyjnego na wygenerowanym grafie dwudzielnym.
-15) Przedstawienie jednego zastosowania kolorowania grafów (np. kolorowanie zwarte do szeregowania zadań).
+1) Wprowadzenie do tematyki SNA.
+2) Omówienie przykłądowej sieci poprzez strukturę grafu.
+3) Analiza skupień w sieci społecznej.
+4) Wyznaczenie różnych rodzajów najbardziej wpływowych elementów sieci.
+5) Wprowadzenie do systemów rekomendujących.
+6) Szeregowania zadań z restrykacją braku przestoju.
 
 ## Wymagane pakiety 
 
@@ -32,7 +24,7 @@ Celem warsztatu jest zaznajomienie uczestników z pakietem igraph oraz podstawow
 
 ## Wymagane od uczestników umiejętności i wiedza 
 
-Podstawowa znajomość języka R oraz logiczne myślenie.
+Podstawowa znajomość języka R.
 
 ## Wymagania wstępne do wykonania przed warsztatem 
 
