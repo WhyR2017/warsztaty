@@ -102,7 +102,7 @@ Sesja popołudniowa:
 Sesja poranna:
 
 - Termin: 9:00 - 12:30, 27.09.2017
-- Tytuł: [Pakiet igraph - bo grafy są wszędzie tylko dyskretnie](https://github.com/whyR-conference/warsztaty/tree/master/317_Grafy_Analiza_Tekstu/sesja_poranna)
+- Tytuł: [Social Network Analysis w R](https://github.com/whyR-conference/warsztaty/tree/master/317_Grafy_Analiza_Tekstu/sesja_poranna)
 - Prowadzący: [Michał Wojtasiewicz, Instytut Podstaw Informatyki PAN]()
 
 Sesja popołudniowa:
