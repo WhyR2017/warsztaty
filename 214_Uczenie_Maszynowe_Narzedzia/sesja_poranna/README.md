@@ -1,6 +1,6 @@
 # Machine Learning w R przy użyciu H2O
 
-[Michał Maj, Grupa Wirtualna Polska, trigeR](https://pl.linkedin.com/in/michał-maj-4912207a)
+[Michał Maj, Appsilon Data Science, trigeR](https://pl.linkedin.com/in/michał-maj-4912207a)
 
 ## Opis warsztatu 
 
