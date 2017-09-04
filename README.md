@@ -47,7 +47,7 @@ Sesja poranna:
 
 - Termin: 9:00 - 12:30, 27.09.2017
 - Tytuł: [Machine Learning w R przy użyciu H2O](https://github.com/whyR-conference/warsztaty/tree/master/214_Uczenie_Maszynowe_Narzedzia/sesja_poranna)
-- Prowadzący: [Michał Maj, Grupa Wirtualna Polska, trigeR](https://pl.linkedin.com/in/michał-maj-4912207a)
+- Prowadzący: [Michał Maj, Appsilon Data Science, trigeR](https://pl.linkedin.com/in/michał-maj-4912207a)
 
 Sesja popołudniowa:
 
