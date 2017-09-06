@@ -10,7 +10,7 @@ Naturalną metodą zapisu sieci jest graf czyli zbiór wierzchołków i krawędz
 ## Plan warsztatu 
 
 1) Wprowadzenie do tematyki SNA.
-2) Omówienie przykłądowej sieci poprzez strukturę grafu.
+2) Omówienie przykładowej sieci poprzez strukturę grafu.
 3) Analiza skupień w sieci społecznej.
 4) Wyznaczenie różnych rodzajów najbardziej wpływowych elementów sieci.
 5) Wprowadzenie do systemów rekomendujących.
