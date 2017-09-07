@@ -1,14 +1,16 @@
 # Kombajn do uczenia maszynowego - MLR w praktyce
 
-[Paweł Zawistowski, Politechnika Warszawska, Wydział EiTI / AdForm](https://pzawistowski.github.io/about)
+[Paweł Zawistowski, Politechnika Warszawska, Instytut Informatyki EiTI / AdForm](https://pzawistowski.github.io/about)
 
 ## Opis warsztatu 
 
-Celem warsztatu jest przedstawienie szerokich możliwości jakie daje pakiet MLR przy tworzeniu różnego rodzaju modeli - przejdziemy przy tym kompletną ścieżkę, od wstępnego przygotowania danych, przez wybór odpowiedniej metody, strojenie hiperparametrów, aż po diagnostykę i wizualizacje wyników. 
+Kiedy coraz powszechniejsze staje się stosowanie mniej lub bardziej skomplikowanych modeli statystycznych, a liczba pakietów R'a z nowymi metodami i algorytmami ciągle wzrasta - dobrze mieć w zanadrzu narzędzie, które spina wszystkie etapy tworzenia modelu w jedną całość. Pakiet MLR jest takim właśnie "kombajnem", który może w znacznym stopniu ułatwić nam pracę. 
+
+W ramach warsztatu zobaczymy jakie możliwości daje MLR przy tworzeniu różnego rodzaju modeli - przejdziemy przy tym kompletną ścieżkę, od wstępnego przygotowania danych, przez wybór odpowiedniej metody, strojenie parametrów, aż po diagnostykę i wizualizacje wyników. 
 
 ## Plan warsztatu 
 
-1. Ogólne wprowadzenie do pakietu, przygotowanie środowiska MLR.
+1. Omówienie możliwości pakietu MLR, przygotowanie środowiska.
 2. Przygotowanie danych do rozwiązywania naszego zadania (klasyfikacja, regresja, ...).
 3. Wybór modelu, strojenie parametrów.
 4. Diagnostyka i wizualizacja wyników.
@@ -26,8 +28,14 @@ W ramach warsztatu korzystać będziemy z `mlr` oraz `tidyverse`. Udostępniony 
 
 ## Wymagania wstępne do wykonania przed warsztatem 
 
-Intalacja pakietów R lub ściągnięcie dockera i uruchomienie udostępnionego obrazu.
+Instalacja pakietów R lub ściągnięcie dockera i uruchomienie udostępnionego obrazu.
 
 ## Język warsztatu 
 
-polski
+Polski.
+
+## Sylwetka prowadzącego
+
+Z wykształcenia jestem informatykiem specjalizującym się w metodach sztucznej inteligencji.  Moje doświadczenia zawodowe leżą zarówno na polu naukowo-badawczym jak również w projektach komercyjnych - obecnie pracuję jako adiunkt w Instytucie Informatyki (wydział EiTI, PW) oraz w firmie Adform. 
+
+"Na poważnie" analizowaniem i modelowaniem danych zajmuję się od 2008r, a językiem R od 2010r. Od tego czasu uczestniczyłem w różnorakich projektach, począwszy od pojedynczych analiz niewielkich zbiorów danych, przez opracowywanie metod regresji i klasyfikacji w ramach projektów badawczych, aż po tworzenie wielkoskalowych systemów produkcyjnych stosujących modele predykcyjne setki tysięcy razy na sekundę.
