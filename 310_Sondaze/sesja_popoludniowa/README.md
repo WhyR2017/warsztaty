@@ -43,7 +43,10 @@ Podstawowe umiejętności w zakresie przetwarzania i analizy danych w R (operacj
 
 ## Wymagania wstępne do wykonania przed warsztatem
 
-Instalacja pakietów survey i ggplot2.
+  1. Pobierz [plik ze skryptem](https://raw.githubusercontent.com/whyRconf/warsztaty/master/211_Sondaze/sesja_popoludniowa/sprawdz_czy_dziala.R) i spróbuj uruchomić go na swoim komputerze, z którym zamierzasz pojawić się na warsztatch.
+     - Jeśli uda Ci się to zrobić nie napotykając na błędy, na warsztatach raczej nie powinniśmy napotkać problemów technicznych.
+     - Jeśli napotkasz błędy, spróbuj je rozwiązać samemu, lub pisz do mnie.
+     - Jeśli nie masz zainstalowanych pakietów *survey*, *ggplot2* lub *effects*, wywołanie skryptu spowoduje próbę ich zainstalowania.
 
 ## Język 
 
