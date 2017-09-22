@@ -1,6 +1,6 @@
 # Kiedy brakuje wydajności... R i C++ = Rcpp
 
-[Zygmunt  Zawadzki, zstat](zstat.pl)
+[Zygmunt  Zawadzki, zstat](http://zstat.pl)
 
 ## Opis warsztatu 
 

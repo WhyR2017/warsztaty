@@ -5,7 +5,7 @@ Sesja poranna:
 
 - Termin: 9:00 - 12:30, 27.09.2017
 - Tytuł: [Analiza danych sondażowych w R](https://github.com/whyR-conference/warsztaty/tree/master/211_Sondaze/sesja_poranna)
-- Prowadzący: [Dariusz Szklarczyk Agnieszka Otręba - Szklarczyk, Fundacja Rozwoju Badań Społecznych](www.furbs.org)
+- Prowadzący: [Dariusz Szklarczyk Agnieszka Otręba - Szklarczyk, Fundacja Rozwoju Badań Społecznych](http://www.furbs.org)
 
 Sesja popołudniowa:
 
@@ -75,13 +75,13 @@ Sesja poranna:
 
 - Termin: 9:00 - 12:30, 27.09.2017
 - Tytuł: [Interaktywne wizualizacje w R i plotly - case study](https://github.com/whyR-conference/warsztaty/tree/master/312_Wizualizacje/sesja_poranna)
-- Prowadzący: [Piotr Ocalewicz, Ocado Technology](linkedin.com/in/piotr-ocalewicz-ab8770a0)
+- Prowadzący: [Piotr Ocalewicz, Ocado Technology](http://linkedin.com/in/piotr-ocalewicz-ab8770a0)
 
 Sesja popołudniowa:
 
 - Termin: 14:00 - 17:30, 27.09.2017
 - Tytuł: [Efektywna i efektowna wizualizacja w ggplot2](https://github.com/whyR-conference/warsztaty/tree/master/312_Wizualizacje/sesja_popoludniowa)
-- Prowadzący: [Piotr Ćwiakowski, Uniwersytet Warszawski](www.labmasters.pl)
+- Prowadzący: [Piotr Ćwiakowski, Uniwersytet Warszawski](http://www.labmasters.pl)
 
 # Analiza wielowymiarowa - sala 313
 
@@ -118,7 +118,7 @@ Sesja poranna:
 
 - Termin: 9:00 - 12:30, 27.09.2017
 - Tytuł: [Kiedy brakuje wydajności... R i C++ = Rcpp](https://github.com/whyR-conference/warsztaty/tree/master/316_Wydajnosc/sesja_poranna)
-- Prowadzący: [Zygmunt  Zawadzki, zstat](zstat.pl)
+- Prowadzący: [Zygmunt  Zawadzki, zstat](http://zstat.pl)
 
 Sesja popołudniowa:
 

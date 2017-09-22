@@ -1,6 +1,6 @@
 # Analiza danych sondażowych w R
 
-[Dariusz Szklarczyk Agnieszka Otręba - Szklarczyk, Fundacja Rozwoju Badań Społecznych](www.furbs.org)
+[Dariusz Szklarczyk Agnieszka Otręba - Szklarczyk, Fundacja Rozwoju Badań Społecznych](http://www.furbs.org)
 
 ## Opis warsztatu 
 
