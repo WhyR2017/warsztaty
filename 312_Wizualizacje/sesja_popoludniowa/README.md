@@ -1,6 +1,6 @@
 # Efektywna i efektowna wizualizacja w ggplot2
 
-[Piotr Ćwiakowski, Uniwersytet Warszawski](www.labmasters.pl)
+[Piotr Ćwiakowski, Uniwersytet Warszawski](http://www.labmasters.pl)
 
 ## Opis warsztatu 
 

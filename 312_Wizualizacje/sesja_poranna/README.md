@@ -1,6 +1,6 @@
 # Interaktywne wizualizacje w R i plotly - case study
 
-[Piotr Ocalewicz, Ocado Technology](linkedin.com/in/piotr-ocalewicz-ab8770a0)
+[Piotr Ocalewicz, Ocado Technology](http://linkedin.com/in/piotr-ocalewicz-ab8770a0)
 
 ## Opis warsztatu 
 
