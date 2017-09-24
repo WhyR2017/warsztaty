@@ -19,7 +19,7 @@ Celem warsztatu jest zapoznanie uczestników z platformą H2O oraz dostępnymi a
 
 
 
-h2o, dplyr, ggplot2, h2oEnsemble
+h2o, gridExtra, tidyverse
 
 ## Wymagane od uczestników umiejętności i wiedza 
 
@@ -27,7 +27,7 @@ Podstawowa znajomość języka R. Mile widziana (choć niekonieczna) podstawowa 
 
 ## Wymagania wstępne do wykonania przed warsztatem 
 
-R, RStudio, wymagane pakiety.
+R, RStudio, wymagane pakiety, pobranie danych i skryptów https://github.com/maju116/WhyR_conf_H2O (w folderze 'data' należy rozpakować poszczególne pliki)
 
 ## Język warsztatu 
 
