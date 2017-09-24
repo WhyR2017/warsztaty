@@ -19,7 +19,10 @@ W ramach warsztatu zobaczymy jakie możliwości daje MLR przy tworzeniu różneg
 
 ## Wymagane pakiety 
 
-W ramach warsztatu korzystać będziemy z `mlr` oraz `tidyverse`. Udostępniony zostanie również obraz dockera ze wszystkim co potrzebne + RStudio.
+W ramach warsztatu korzystać będziemy głównie z `mlr`, `tidyverse` oraz notatników w R markdown.
+Opcjonalnie przydać mogą się narzędzia takie jak `ggplot2`, `GGally` i `parallelMap`.
+
+Udostępniony jest [obraz dockera](https://hub.docker.com/r/pzawistowski/mlr-workshop/) ze wszystkim co potrzebne + RStudio.
 
 ## Wymagane od uczestników umiejętności i wiedza 
 
