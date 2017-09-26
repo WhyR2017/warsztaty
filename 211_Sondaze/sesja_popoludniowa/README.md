@@ -1,4 +1,4 @@
-# Złożone schematy doboru próby - pakiet survey
+# Analiza danych zebranych w oparciu o złożone schematy doboru próby z wykorzystaniem pakietu survey
 
 [Tomasz Żółtak, Instytut Badań Edukacyjnych](https://github.com/tzoltak)
 
@@ -26,7 +26,7 @@ Duża część dostępnych powszechnie danych z badań sondażowych pochodzi z p
      - Jak korzystać z funkcji ‘svyglm()’?
      - A co z liczeniem korelacji?
      - W jakich sytuacjach warto uwzględniać złożony schemat doboru próby przy prowadzeniu analizy regresji?
-  8. Poststratyfikacja i techniki pokrewne (jeśli ktoś jest zainteresowany, może rzucić okiem na [tą prezentację](https://github.com/tzoltak/warsztaty/tree/master/310_Sondaze/sesja_popoludniowa/poststratyfikacja_ESS.pdf)).
+  8. Poststratyfikacja i techniki pokrewne (jeśli ktoś jest zainteresowany, może rzucić okiem na [tą prezentację](https://github.com/tzoltak/warsztaty/tree/master/310_Sondaze/sesja_popoludniowa/materialy_uzupelniajace/poststratyfikacja_ESS.pdf)).
      - Co to znaczy, że próba jest reprezentatywna? (Bardzo możliwe, że nie to, czego się spodziewasz!)
      - Definiowanie wag poststratyfikacyjnych w pakiecie „survey”.
      - Kiedy warto używać poststratyfikacji, a kiedy lepiej tego nie robić?
@@ -47,7 +47,6 @@ Podstawowe umiejętności w zakresie przetwarzania i analizy danych w R (operacj
      - Jeśli uda Ci się to zrobić nie napotykając na błędy, na warsztatach raczej nie powinniśmy napotkać problemów technicznych.
      - Jeśli napotkasz błędy, spróbuj je rozwiązać samemu, lub pisz do mnie.
      - Jeśli nie masz zainstalowanych pakietów *survey*, *ggplot2* lub *effects*, wywołanie skryptu spowoduje próbę ich zainstalowania.
-
 
 ## Język 
 

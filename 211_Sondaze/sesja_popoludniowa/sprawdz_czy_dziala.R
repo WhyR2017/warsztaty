@@ -52,3 +52,4 @@ library(ggplot2)
 ggplot(apiclus2, aes(x = meals, y = api00, size = pw)) + geom_point()
 ggplot(apiclus2, aes(x = meals, y = api00, z = pw)) + stat_summary_2d()
 #|<-
+
