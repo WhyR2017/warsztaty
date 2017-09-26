@@ -1,0 +1,342 @@
+---
+title: "Złożone schematy doboru próby"
+author: "Tomasz Żółtak"
+date: "6 września 2017"
+output:
+  ioslides_presentation:
+    css: styles.css
+---
+
+# Badania na reprezentatywnych próbach losowych
+
+## Próby losowe - nie wszędzie
+
+W wielu dziedzinach (rodzajach badań) nie stosuje się czegoś takiego, jak losowy dobór prób (reprezentatywnych):
+
+  - klasyczne eksperymenty (randomizacja to co innego niż dobór próby);
+  - szerokie spektrum badań przyrodniczych;
+  - badania wyczerpujące (np. w makroekonomii).
+
+## Ale dziś mówimy o:
+
+  >- Sytuacji, gdy interesuje nas zbadanie cech **skończonej** populacji.
+  >- Posiadamy *spis* wszystkich* jednostek w tej populacji, czyli tzw. **operat** losowania.
+  >- Do uczestnictwa w badaniu wybieramy losowo tylko część populacji, czyli **próbę** (często bardzo nieliczną w stosunku do wielkości populacji).
+  >- Procedura wybierania jednostek do próby gwarantuje, że dla każdej* z jednostek populacji jesteśmy w stanie określić prawdopodobieństwo, że zostanie ona wybrana do próby.
+  >- Dla każdej jednostki takie prawdopodobieństwo jest niezerowe.
+  
+## Badania na próbach losowych:
+
+Typowo stosowane w:
+
+  - szeroko pojętych naukach społecznych:
+    - socjologii, psychologii, naukach politycznych,
+    - badaniach edukacyjnych, badaniach rynku pracy,
+  - epidemiologii;
+  - statystyce publicznej;
+    - właśnie w tym kontekście tradycyjnie rozwijane były związane z ich wykorzystaniem metody statystyczne;
+  - badaniach opinii publicznej (np. poparcia dla partii politycznych).
+
+**Często wykorzystywane są w badaniach sondażowych**, a więc w sytuacji, gdy badana populacja składa się z ludzi, którzy w trakcie badania wypełniają (sami lub za pośrednictwem ankietera) pewien kwestionariusz (ankietę).
+
+# Złożone schematy doboru próby - po co?
+
+## Dobór prosty
+
+Z całej populacji losujemy jednostki do próby indywidualnie, z równym prawdopodobieństwem wyboru.
+
+![](rysunki/dobor_prosty.svg)
+
+## Stratyfikacja
+
+Przed losowaniem dzielimy populację na grupy, tzw. warstwy (na podstawie cech, które znamy dla każdego w operacie), i z każdej z nich oddzielnie losujemy jednostki do próby.
+
+Podział liczebności próby między warstwy nazywa się **alokacją**.
+
+![](rysunki/dobor_warstwowy.svg)
+
+## Stratyfikacja cd.
+
+  - Pozwala zwiększyć precyzję wnioskowania statystycznego.
+    - Stratyfikacja pomaga zapewnić, że w wyniku losowania nie otrzymamy prób o rozkładach interesujących nas zmiennych znacząco odbiegających od rozkładów populacyjnych.
+    - W praktyce nie jest to proste, jeśli badanie obejmuje wiele różnych zmiennych.
+
+  - Daje możliwość prowadzenia analizy w wybranych podgrupach, nawet jeśli w populacji są niezbyt liczne.
+    - Wydzielamy takie grupy jako oddzielne warstwy i losujemy z nich wystarczająco dużo jednostek.
+    - Chcąc wnioskować o cechach populacji, musimy je potem odpowiednio przeważyć.
+
+## Dobór zespołowy i wielostopniowy
+
+Z operatu losujemy nie pojedyncze jednostki, ale całe grupy (np. szkoły, gminy, gospodarstwa domowe). Dopiero w następnym kroku z każdej z wylosowanych grup losujemy poszczególne jednostki (dobór wielostopniowy) lub włączamy do próby wszystkich z tych grup (dobór zespołowy).
+
+![](rysunki/dobor_wielostopniowy.svg)
+
+## Dobór zespołowy i wielostopniowy cd.
+
+  - Pozwala zminimalizować koszty badania związane z dotarciem do respondentów.
+    - Jeśli badanie wymaga osobistej obecności ankietera, a badani występują w skupiskach (terytorialnych) - np. uczniowie w szkołach, ale również mieszkańcy państwa w miejscowościach - to dużo taniej jest przebadać kilku (lub wszystkich) z jednego *skupiska*, niż tą samą liczbę osób w różnych miejscach.
+
+  - Umożliwia prowadzenie analiz wielopoziomowych.
+    - Aby badać związki pomiędzy zmiennymi z różnych poziomów (np. gminy i poszczególnych mieszkańców), musimy mieć zapewnioną rozsądnie dużą liczbę obserwacji w ramach każdej z jednostek wyższego rzędu.
+
+## Dobór zespołowy i wielostopniowy cd.
+
+  - Losowanie jednostek I stopnia z równym prawdopodobieństwem.
+    - Gdy w ramach jednostek I stopnia losujemy założony odsetek jednostek II stopnia (w szczególności przy doborze zespołowym).
+  - Losowanie jednostek I stopnia z prawdopodobieństwem proporcjonalnym do ich liczebności.
+    - Gdy w ramach każdej jednostki I stopnia losujemy założoną liczbę jednostek II stopnia.
+  - Losowanie jednostek I stopnia ze zwracaniem lub bez.
+
+## A ile można stracić?
+
+Wadą złożonych schematów doboru próby - zwłaszcza wielostopniowego i zespołowego - jest ich zwykle niższa *efektywność*. Tzn. **typowo chcąc osiągnąć określoną moc testu, musimy dobrać w sposób złożony liczniejszą próbę, niż gdyby stosować dobór prosty**.
+
+Ile razy liczniejsza powinna być próba dobrana w dany (złożony) sposób, aby zachować precyzję szacowania schematu prostego pokazuje tzw. *efekt schematu doboru próby* (*design effect*):
+
+$Deff = {{D^2(\hat{X}_{złożony})} \over {D^2(\hat{X}_{prosty})}}$
+
+Czyli iloraz **wariancji estymatora** (nie mylić z estymatorem wariancji!) przy rozpatrywanym sposobie doboru do wariancji estymatora przy doborze prostym.
+
+## Od czego zależy efektywność?
+
+Efektywność schematu doboru próby zmniejsza się, gdy:
+
+  - Jednostki w ramach zespołów (jednostek losowania I rzędu) są do siebie *raczej podobne*.
+    - Jednak jeśli są od siebie *raczej różne* (bywa i tak), to dobór złożony będzie bardziej efektywny niż prosty.
+  - Występuje zróżnicowanie prawdopodobieństwa trafienia jednostek do próby.
+    - Chyba że prawdopodobieństwo doboru jest pozytywnie skorelowane ze **zmienną będącą przedmiotem naszego zainteresowania**.
+    
+W związku z tym *Deff* trudno jest szacować przed dobraniem próby.
+
+  - **Jest on specyficzny ze względu na rozpatrywaną zmienną**, a żeby go dobrze oszacować musimy być w stanie określić siłę związku między daną zmienną a prawdopodobieństwami doboru do próby.
+
+# Przykłady w projektach badawczych
+
+## Omnibus CBOS
+
+  - Próba dobierana na podstawie rejestru PESEL (zamawia się to w GUS).
+  - Realizowana liczebność ~1000 osób (losowanych zapewne ~2500).
+  - Warstwy ze względu na województwo i klasę wielkości miejscowości.
+    - Łącznie powstaje 80 warstw.
+    - Do każdej z warstw przydziela się liczbę losowanych osób tak, aby proporcja osób w danej warstwie w próbie do liczebności całej próby była zbliżona do proporcji liczebności danej warstwy w populacji do liczebności całej populacji.
+    - Jest to tzw. *alokacja proporcjonalna*.
+  
+## Omnibus CBOS cd.
+  
+  - Stosuje się dobór dwustopniowy:
+    - Najpierw losowane są miejscowości (z prawdopodobieństwem proporcjonalnym do liczby mieszkańców miejscowości).
+      - Losowanie ze zwracaniem - inaczej mielibyśmy w próbie deficyt osób z największych miast.
+    - Następnie z każdej z wylosowanych miejscowości losuje się po **9 osób**.
+      - Ta liczba osób z tej samej miejscowości określana jest jako *liczebność wiązki*.
+      - Jeśli jakaś miejscowość została w poprzednim kroku wylosowana *m* razy, to losuje się z niej odpowiednio 9*m* osób.
+  - Nieco więcej szczegółów można doczytać na [stronie CBOS](http://www.cbos.pl/PL/badania/metody_realizacji.php).
+  - Typowo w badaniu znajdują się osoby z 235-240 różnych gmin.
+
+## Polska próba European Social Survey
+
+  - Losowana z PESEL, ~2000 zrealizowanych wywiadów (wylosowanych osób ~2800).
+  - Stratyfikacja: 179 warstw według wielkości miejscowości i lokalizacji.
+    - Alokacja jest proporcjonalna do populacyjnej liczebności warstwy, ale jednocześnie odwrotnie proporcjonalna do przewidywanego poziomu realizacji (*response rate*).
+  - W warstwach obejmujących miasta powyżej 50 tys. mieszkańców respondenci są losowani w sposób prosty.
+  - W pozostałych warstwach dobór dwustopniowy (podobnie jak w badaniu CBOS):
+    - Najpierw losowane są miejscowości (z prawdopodobieństwem proporcjonalnym do liczby mieszkańców miejscowości).
+    - Następnie z każdej z wylosowanych miejscowości losuje się po **4 osoby**.
+
+## Inne kraje w European Social Survey
+
+  - Zdarzają się kraje, w których stosuje się dobór prosty:
+    - Belgia, Dania, Szwecja.
+    - Tak naprawdę te próby dobierane są losowaniem systematycznym w połączeniu z tzw. *stratyfikacją implicite*.
+  - W części krajów brak operatu obywateli.
+    - Np. Wielka Brytania, Bułgaria, Cypr.
+    - Losuje się wtedy gospodarstwa domowe (rejestry adresów występują bardziej powszechnie).
+    - Po przyjściu pod dany adres ankieter spisuje członków gospodarstwa domowego i spośród nich losuje respondenta.
+      - W zasadzie powinien zrobić to ściśle z założoną procedurą, ale w praktyce istnieje spora pokusa, by nie wybrać osoby, która akurat w chwili wizyty jest nieobecna.
+      - Występują znaczne różnice prawdopodobieństwa wyboru respondenta do badania (jest ono większe w mniej licznych gosp. dom., a mniejsze w bardziej licznych.). Zwykle obniża to efektywność próby.
+
+## Polska próba PISA 2012
+
+  - Próba z założenia ma być reprezentatywna dla populacji *piętnastolatków*.
+  - Cztery warstwy wyróżnione ze względu na typ szkoły:
+    - gimnazja publiczne,
+    - gimnazja niepubliczne,
+    - licea ogólnokształcące,
+    - inne szkoły pogimnazjalne.
+  - Gimnazja niepubliczne nadreprezentowane w próbie (~8% próby wobec ~2% w populacji).
+    - W celu umożliwienia porównań między gimn. publicznymi a niepublicznymi.
+  - Szkoły losowane w ramach warstw z prawdopodobieństwem proporcjonalnym do (szacowanej na podstawie SIO) liczby uczniów *piętnastoletnich*.
+  - W ramach każdej ze szkół do badania losowano 30 uczniów.
+
+## Polska próba PIRLS/TIMSS
+
+  - Próba z założenia ma być reprezentatywna dla populacji uczniów *kończących czwarty rok nauki*.
+    - W Polsce w edycjach 2006 i 2011 byli to uczniowie klas III.
+    - W edycji 2016 zmieniono podejście i badano uczniów klas IV.
+  - Próba szkół podstawowych bez warstw *explicite*.
+  - Szkoły losowane z prawdopodobieństwem proporcjonalnym do liczby oddziałów klasy III (lub IV).
+  - W ramach wylosowanych szkół losowany (prosto) jeden oddział.
+
+# A jak to wpływa na analizy?
+
+## Kontekst historyczny
+
+  - Metody statystyczne pozwalające wnioskować o cechach skończonych populacji na podstawie prób losowych historycznie były rozwijane głównie w kontekście statystyki publicznej.
+  - Klasycznym obiektem zainteresowania było tam określenie **sumy wartości zmiennej w populacji** (np. łącznej wartości, czy liczby osób, gospodarstw domowych o pewnych cechach).
+    - W innych kontekstach najbardziej typowo interesujemy się estymacją średnich (szczęśliwie średnia jest liniową funkcją sumy wartości).
+  - Centralne pojęcie: **sampling weight**:
+    - $w_s = 1 / \pi$, gdzie $\pi$ to prawdopodobieństwo wyboru jednostki do próby;
+    - wskazuje, jak wiele jednostek w populacji *reprezentuje* dana jednostka, gdy trafia do próby.
+      - Z tej interpretacji wynika sposób jej korygowania w sytuacji, gdy nie udało nam się zbadać wszystkich wylosowanych do próby.
+
+## Estymatory punktowe
+
+**Estymator sumy wartości populacyjnych Horvitza-Thompsona** (stosuje się do losowania ze zwracaniem, jak i bez zwracania).
+
+$\hat{T}_{HT} = \sum {x_i \over \pi_i}$
+
+gdzie $\pi_i$ to prawdopodobieństwo wybrania *i*-tej jednostki do próby.
+
+Od estymatora sumy populacyjnej możemy prosto przejść do estymatorów punktowych innych parametrów.
+
+  - Po prostu musimy wyrazić te parametry jako funkcje sumy wartości populacyjnych i wartości zmiennej dla poszczególnych jednostek.
+  - W praktyce sprowadza się to zawsze do policzenia parametru z uwzględnieniem wag, których wartości są proporcjonalne do wartości *sampling weight*.
+
+## Wnioskowanie statystyczne
+
+Zasadnicza trudność ze złożonymi schematami doboru próby polega na  **szacowaniu wielkości wariancji (błędów standardowych) estymatorów**.
+
+Stosowane są tu dwa wyraźnie różne od siebie podejścia:
+
+  - Opisanie *explicite* schematu doboru (z linearyzacją Taylora).
+    - Dobrze podbudowane teoretycznie, ale skomplikowane w implementacji.
+    - Nie do każdego parametru daje się zastosować (np. kwantyle).
+    - Wymaga wykorzystania dużej ilości informacji o badanych (co może stanowić problem).
+  - Wykorzystanie metod replikacyjnych: jacknife bootstrap, BRR.
+    - Gorzej podbudowane teoretycznie, łatwe w implementacji, ale bywa obciążające obliczeniowo.
+    - Mogą być stosowane do zupełnie dowolnych parametrów.
+    - Pozwalając zachować anonimowość badanych.
+
+## Linearyzacja Taylora
+
+Punkt wyjścia: wzór na wariancję estymatora sumy populacyjnej Horvitza-Thompsona.
+
+Estymator Yatesa, Grundy'ego i Sena wariancji estymatora Horvitza-Thompsona:
+
+$\hat{D}^2(\hat{T}_{HT}) = \displaystyle\sum_{i=1}^n \sum_{j>i}^n {{\pi_i \pi_j - \pi_{ij}} \over {\pi_{ij}}} \left( {{x_i} \over {\pi_i}} - {{x_j} \over {\pi_j}} \right)^2$
+
+gdzie $\pi_{ij}$ to prawdopodobieństwo, że zarówno *i*-ta jak i *j*-ta jednostka jednocześnie znajdą się w próbie.
+
+W odróżnieniu od estymatora wariancji zaproponowanego przez samych Horvitza i Thompsona raczej nie przyjmuje wartości ujemnych. Jest jednak nieobciążony tylko w sytuacji, gdy schemat doboru próby zawsze zwraca próbę o tej samej liczebności.
+
+## Linearyzacja Taylora cd.
+
+  - Obliczanie prawdopodobieństw znalezienia się w próbie parami może być bardzo uciążliwe.
+    - W szczególności dla schematu wielostopniowego z losowaniem bez zwracania z prawdopod. prop. do wielkości jednostki na I stopniu.
+    - W praktyce często wykorzystuje się aproksymacje.
+  - A macierz konieczna do przechowywania tych prawdopodobieństw może być bardzo duża.
+  
+  - **Trzeba jeszcze wyprowadzić wzory na estymatory wariancji interesujących nas parametrów.**
+    - Dla parametrów będących liniowymi funkcjami sumy populacyjnej i znanych wielkości (np. średnia) - proste.
+    - Dla pozostałych parametrów ktoś musiał usiąść i wyprowadzić wzór na aproksymację przy pomocy linearyzacji Taylora (dużo ślęczenia nad pochodnymi).
+    - Nie dla wszystkich parametrów linearyzacja daje dobre wyniki (np. kwantyle).
+
+## Metody replikacyjne
+
+Ogólna idea: Potraktuj swoją wylosowaną próbę jako populację i symuluj losowanie z niej prób (replikacji) w celu oszacowania rozkładu danego parametru. Stosowana schemat losowania powinien odpowiadać (naśladować) schematowi, w wynik którego dobrana została analizowana próba.
+
+## Metody replikacyjne cd.
+
+  - **Jacknife:**
+    - rozpatrz wszystkie możliwe replikacje powstające w wyniku usunięcia z próby (warstwy) pojedynczej obserwacji (jednostki losowania I stopnia).
+  - **Bootstraping:**
+    - wielokrotnie losuj z próby (warstwy) ze zwracaniem replikacje równoliczne (ze względu na liczbę jednosetk losowania I stopnia) z próbą.
+  - **Balanced Repeated Replication (BRR):**
+    - dobierz jednostki obserwacji (jednostki losowania I stopnia) w pary (pseudowarstwy) i rozpatrz wszystkie $2n/2$ replikacje powstające w wyniku niezależnego wyboru jednej obserwacji w ramach każdej pary (pseudowarstwy).
+  
+W praktyce do celów analizy  przygotowuje się zestaw zmiennych (tylu, ile jest rozpatrywanych replikacji), z których każda opisuje, które jednostki trafiły do danej replikacji, a które zostały z niej wykluczone.
+
+## Balanced Repeated Replication (BRR)
+
+  - Metoda często wykorzystywana w badaniach edukacyjnych.
+    - Ale również badaniach związanych ze zdrowiem (w Ameryce Północnej).
+  - Pod względem formalnym powiązana z wykorzystaniem przy doborze próby tzw. *warstwowania implicite*.
+    - Sortujemy operat (w ramach warstw *explicite*) ze względu na wybrane kryteria, a następnie stosujemy losowanie systematyczne (losujemy punkt startowy i wybieramy do próby co *k*-ty element operatu).
+  - Jednostki wybrane w danej replikacji otrzymują wagę 2, niewybrane 0.
+    - Stosuje się też modyfikację polegająca na tym, że jednostkom *wybranym* wagę się o zadaną wartość (tzw. **parametr Fay'a:** $\varepsilon \in (0;1)$, typowo 0,5) zwiększa, a *niewybranym* zmniejsza. Daje to lepsze własności przy analizach na małych podgrupach.
+    - Takie wagi trzeba jeszcze połączyć z *sampling weights*.
+
+## Macierz wag BRR do polskiego zbioru PISA 2012
+
+```{r eval=TRUE, echo=FALSE, message=FALSE}
+library(ggplot2)
+load("dane/PISA2012.RData")
+w = subset(student2012weights, CNT == "Poland")
+w = cbind(stack(w[, grep("^W_FSTR", names(w))]),
+          id_ucznia = rep(w$STIDSTD, length(grep("^W_FSTR", names(w)))),
+          w_fstuwt = rep(w$W_FSTUWT, length(grep("^W_FSTR", names(w)))))
+w$values = round(w$values / w$w_fstuwt, 1)
+w$ind = as.numeric(w$ind)
+w$id_ucznia = as.numeric(w$id_ucznia)
+names(w) = c("waga", "nr_replikacji", "id_ucznia", "w_fstuwt")
+ggplot(w, aes(id_ucznia, nr_replikacji, z = waga)) + stat_summary_2d(binwidth = 1)
+```
+
+## Szacowanie wariancji estymatora BRR
+
+Wariancję estymatora parametru $\theta$ z wykorzystaniem BRR szacujemy jako:
+
+$\hat{D}_\epsilon^2 \left( \hat{\theta} \right) = {1 \over {G\varepsilon^2}} \displaystyle\sum_{i=1}^G \left( \hat{\theta}_i - \hat{\theta} \right)^2$
+
+  - gdzie:
+    - $G$ - liczba replikacji,
+    - $\varepsilon$ parametr Fay'a,
+    - $\hat{\theta}_i$ oszacowanie parametru na podstawie *i*-tej replikacji,
+    - $\hat{\theta}$ oszacowanie na podstawie całej próby.
+
+Jako liczbę obserwacji (na potrzeby określania liczby stopni swobody) traktujemy $G$.
+
+# Pakiet survey
+
+## Co potrafi pakiet survey?
+
+  - Analizować dane z prób dobranych w sposób złożony:
+    - [opisując *explicite* schemat doboru próby](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svydesign),
+    - [korzystając z zestawu wag replikacyjnych](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svrepdesign).
+  - [Tworzyć zestawy wag replikacyjnych](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/as.svrepdesign) (różnych typów).
+  - Przeprowadzić (i uwzględnić w estymacji) poststratyfikację.
+    - [Klasyczna poststratyfikacja](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/postStratify), [wagi wieńcowe (*raking*)](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/rake), [kalibracja](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/calibrate).
+  - Estymować [rozkłady brzegowe i łączne](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svytable) zmiennych kategorialnych.
+    - Oraz przeprowadzić test niezależności $\chi^2$.
+  - Estymować [typowe statystyki opisowe](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/surveysummary):
+    - sumy populacyjne, średnie, [odsetki](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svyciprop), wariancje;
+    - [kwantyle](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svyquantile);
+    - i ich błędy standardowe.
+  - ...
+
+## Co potrafi pakiet survey? cd.    
+
+  - Rysować wykresy:
+    - [histogramy i wykresy skrzynkowe](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svyhist), [wykresy rozrzutu](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svyplot).
+  - Prowadzić analizy regresji:
+    - [uogólniony model liniowy](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svyglm), [regresja logitowa i probitowa dla porządkowej zmiennej zależnej](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svyolr),
+    - wykonać [testy istotności liniowych kombinacji parametrów modelu](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/regTermTest),
+    - szacować wielkość efektów na podstawie [*predictive marginal means*](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svypredmeans).
+  - Prowadzić analizy przeżycia:
+    - [regresja Coxa](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svycoxph), [krzywe Kapplana-Meiera](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svykm).
+  - Estymować model [analizy czynnikowej](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svyfactanal) lub przeprowadzić [analizę głównych składowych](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svyprcomp).
+  - Estymować dowolne parametry (i ich błędy standardowe):
+    - Określone jako [przekształcenia innych, znanych parametrów](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svycontrast).
+    - [Metodą największej pseudowiarygodności](https://www.rdocumentation.org/packages/survey/versions/3.32-1/topics/svymle).
+
+## Pakiety pochodne
+
+  - **mitools** - pakiet do analizy danych z wielokrotnych imputacji braków danych (*multiple imputation*);
+  - **intsvy** - pakiet do analizy wyników międzynarodowych badań edukacyjnych:
+    - bardzo upraszcza kwestie związane z wczytywaniem i łączeniem zbiorów danych oraz prowadzeniem typowych analiz wspieranych badań (PISA 2012, 2015; PIRLS/TIMSS 2011; PIAAC);
+    - pozwala uwzględnić również kwestię opisania wyników testów umiejętności przy pomocy *plausible values*;
+  - **lavaan.survey** - pakiet pozwalający uwzględnić złożone schematy doboru próby w modelowaniu strukturalnym (SEM):
+    - pozwala też uwzględnić zbiory z wielokrotnymi imputacjami braków danych;
+    - ale działa tylko z modelami dla zmiennych ciągłych;
+  - **srvyr** - nakładka umożliwiająca operowanie na obiektach pakietu *survey* przy pomocy funkcji znanych z pakietu *dplyr*;
+
+# Czas coś przeanalizować!

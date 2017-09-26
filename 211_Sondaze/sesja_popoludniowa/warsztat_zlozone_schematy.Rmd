@@ -1,0 +1,979 @@
+---
+title: "Złożone schematy doboru próby - pakiet survey"
+author: "Tomasz Żółtak"
+date: "25 września 2017"
+output:
+  html_document:
+    toc: true
+---
+
+# 0. Dobór ogólnopolskiej próby prostej
+
+### Wczytajmy operat
+
+Zbiór danych opisuje liczbę osób dorosłych (mających 18 i więcej) zamieszkałych w poszczególnych gminach w Polsce według stanu na 31 grudnia 2016 r. W gminach miejsko-wiejskich część wiejska i miasto wyodrębnione zostały jako oddzielne obserwacje.
+
+```{r}
+operatPolska = read.csv2("dane/operat_polska.csv", encoding = "UTF-8")
+head(operatPolska)
+```
+
+Żeby wygodniej nam się losowało, utwórzmy na tej podstawie zbiór osób (nie jest to zbyt efektywne, ale w dzisiejszych czasach możemy sobie na to pozwolić).
+
+```{r}
+operatPolska = data.frame(
+  teryt = rep(operatPolska$teryt, times = operatPolska$l_ludn_pow17l),
+  nazwa = rep(operatPolska$nazwa, times = operatPolska$l_ludn_pow17l),
+  typ = rep(operatPolska$typ, times = operatPolska$l_ludn_pow17l))
+```
+
+A tak możemy wylosować prostą pojedynczą próbę losową o liczebności 1000:
+
+```{r}
+proba = sample(1:nrow(operatPolska), 1000)
+str(proba)
+```
+
+### Jak wiele różnych gmin musielibyśmy odwiedzić losując prostą próbę losową?
+
+Roboczo jako oddzielne *gminy* traktujemy tu część wiejską i miasto w gminie miejsko-wieskiej.
+
+Wylosujmy 100 prób po 1000 osób.
+
+```{r}
+# liczba powtórzeń i liczebność próby
+lPowt = 100
+n = 1000
+# struktury danych do przechowywania wyników
+lGmin = lGminJedenResp =
+  vector(mode = "integer", length = lPowt)
+# losujemy
+for (i in 1:lPowt) {
+  proba = sample(operatPolska$teryt, n)
+  lGmin[i] = length(unique(proba))
+  lGminJedenResp[i] = sum(table(proba) == 1)
+}
+# wyniki
+summary(cbind(lGmin, lGminJedenResp))
+```
+
+Odwiedzanie średnio **ponad 600 różnych gmin**, z czego średnio **około 470 żeby (spróbować) zrobić wywiad z tylko jednym respondentem** to jednak podejście bardzo ambitne jeśli chodzi o **czas i koszty**.
+
+# 1. Definiowanie typowych schematów doboru próby
+
+## Badanie ESS 2012
+
+Wczytajmy dane (dla uproszczenia są już w pliku .Rdata) - zbiór z wynikami badania ESS z 2012 r.
+
+```{r}
+(load("dane/ESS 2012.RData"))
+head(dictEss2012)
+#str(ess2012)
+table(ess2012$cntry)
+```
+
+Przykrym odkryciem przy analizie przeważającej większości zbiorów danych z badań społecznych jest to, że nawet jeśli schemat doboru próby jest dobrze udokumentowany (jak w ESS), to nie zawierają one zmiennych niezbędnych, żeby go zdefiniować i móc poprawnie prowadzić wnioskowanie statystyczne.
+
+Zbiór ESS zawiera jedynie trzy zmienne opisujące tzw. *wagi analityczne* (których średnia w zbiorze jest równa 1):
+
+ - `dweight` czyli *sampling weights* przekształcone tak, aby ich średnia była równa 1 (czyli przemnożone przez $n \over N$, gdzie $n$ to liczebność warstwy w próbie, a $N$ to liczebność warstwy w populacji);
+ - `pspwght` czyli wagi po przeprowadzeniu poststratyfikacji;
+ - `pweight` wagi proporcjonalne do liczby mieszkańców poszczególnych krajów - do wykorzystania, gdyby na podstawie danych ESS chcieć wnioskować o *populacji europejskiej*;
+    - w takim przypadku należy je przemnożyć przez `dweight` lub `pspwght`;
+    - takie wnioskowanie to generalnie kiepski pomysł (np. wiele krajów nie uczestniczy w ESS).
+
+```{r}
+zmienneWagi = c("dweight", "pspwght", "pweight")
+subset(dictEss2012, variable %in% zmienneWagi)
+summary(ess2012[, zmienneWagi])
+```
+
+Nie mamy za to żadnych informacji o przynależności do warstw, nie wspominając już o przynależności do jednostek losowania I stopnia itd.
+
+Możemy jeszcze przyjrzeć się zróżnicowaniu wag w poszczególnych krajach:
+
+```{r}
+library(ggplot2)
+ggplot(ess2012, aes(dweight)) + geom_histogram(bins = 10, fill = "blue") +
+  facet_wrap(~cntry)
+ggplot(ess2012, aes(pspwght)) + geom_histogram(bins = 10, fill = "red") +
+  facet_wrap(~cntry)
+```
+
+### Definiowanie schematu prostego i warstwowego
+
+Jedyną rzeczą, która możemy zrobić z typowym zbiorem danych z socjologicznego sondażu, to **włączyć ważenie**. To też ważne, gdyż w niektórych badaniach występuje znaczne zróżnicowanie wag (prawdopodobieństw wyboru do próby) dla poszczególnych jednostek. Zastosowanie ważenie pozwala nam więc **uniknąć obciążenia**, choć **nie pozwoli adekwatnie szacować błędów standardowych**.
+
+Jeśli analizujemy dane z wielu krajóW, powinniśmy też potraktować każdy kraj jako oddzielną warstwę.
+
+Do opisu schematu doboru próby służy funkcja `svydesign()`. Zastosujmy ją do zbioru danych z wynikami badania ESS 2012.
+
+**Dobór prosty**
+
+Przy pomocy funkcji `svydesign()` możemy zdefiniować dobór prosty.
+  - argument `ids` wskazuje zmienną, która opisuje przydział obserwacji w zbiorze do jednostek losowania kolejnych stopni; podaje się go w postaci prawostronnej formuły;
+    - jeśli próba dobierana była jednostopniowo i indywidualnie (nie zespołowo), opisujemy ten fakt podając `ids = ~1`.
+
+```{r messages=FALSE}
+library(survey)
+ess2012prosty = svydesign(ids = ~1, data = ess2012)
+print(ess2012prosty)
+summary(ess2012prosty)
+```
+
+Zobaczmy jeszcze, jaka jest struktura takiego obiektu.
+
+```{r}
+class(ess2012prosty)
+mode(ess2012prosty)
+names(ess2012prosty)
+all.equal(ess2012prosty$variables, ess2012)
+```
+
+Metoda `summary()` dla obiektów klasy `survey.design` zwraca *de facto* wywołanie `summary(schemat$variables)` i zwracane parametry są obliczane **bez uwzględnienia schematu doboru próby**.
+
+**Dobór z nierównymi prawdopodobieństwami **
+
+Nierówne prawdopodobieństwa doboru możemy uwzględnić podając funkcji `svydesign()` jeden z argumentów `probs` lub `weights`. W postaci formuły wskazujemy przy ich pomocy zmienne opisujące prawdopodobieństwa lub wagi.
+  - `probs` jeśli dysponujemy zmienną opisującą prawdopodobieństwa doboru jednostek do próby;
+  - `weights` jeśli dysponujemy zmienną opisującą *sampling weights*;
+    - w praktyce możemy tu bodać również zmienną opisującą *wagi analityczne*.
+
+```{r}
+ess2012dweight = svydesign(ids = ~1, weights = ~dweight,
+                           data = ess2012)
+ess2012dweight
+```
+
+Jeśli chcemy użyć wag poststratyfikacyjnych (nie uwzględniając wpływu poststratyfikacji na wielkość błędów standardowych), również używamy do tego argumentu `weights`.
+
+```{r}
+ess2012pspwght = svydesign(ids = ~1, weights = ~pspwght,
+                           data = ess2012)
+ess2012pspwght
+```
+
+**Dobór warstwowy**
+
+Warstwy definiujemy przy pomocy argumentu `strata`, podobnie jak w przypadku pozostałych podając formułą nazwę odpowiedniej zmiennej (lub zmiennych). W naszym przypadku jako oddzielne warstwy potraktujemy poszczególne kraje.
+
+```{r}
+ess2012warstw = svydesign(ids = ~1, strata = ~cntry,
+                          weights = ~dweight, data = ess2012)
+ess2012warstw
+```
+
+### Przekształcanie danych
+
+Pakiet *survey* udostępnia dwie podstawowe funkcje umożliwiające operowanie na obiektach `survey.design`.
+
+  - `subset()` umożliwia wybór podzbioru obserwacji i działa zupełnie analogicznie jak funkcja `subset()` dla ramek danych (a więc również bardzo analogicznie do funkcji `filter()` z pakietu *dplyr*);
+  - `update()` umożliwia przekształcanie zmiennych i dołączanie nowych zmiennych do zbioru danych; działa analogicznie do funkcji `mutate()` z pakietu *dplyr* (z tym że nie możemy w niej używać *helper functions* i innych specyficznie *dplyrowych* funkcjonalności).
+  
+**Wybierzmy dane z Polski**
+
+```{r}
+ess2012warstwPl = subset(ess2012warstw, cntry == "Poland")
+```
+
+**Dygresja o danych sondażowych (i tabela z rozkładem)**
+
+W danych sondażowych przytłaczająca większość zmiennych nie jest ciągła, lecz ma charakter kategorialny - respondenci wskazywali odpowiedź spośród dosłownie kilku możliwych.
+
+  - Albo każda z odpowiedzi była opisana słownie (np. 1) *zdecydowanie tak*, 2) *raczej tak*, 3) *raczej nie*, 4) *zdecydowanie nie*).
+  - Albo na szerszej skali złożonej z liczb naturalnych (np. od 1 do 10 lub od 0 do 10).
+  - Występują też wartości wskazujące na *nieoczekiwane* przez badacza zachowanie respondenta: odmowy udzielenia odpowiedzi, czy odpowiedzi *nie wiem*.
+
+Sprawdźmy, czy Polacy w 2012 r. byli szczęśliwi:
+
+```{r}
+subset(dictEss2012, variable == "happy")
+rozklad = svytable(~happy, ess2012warstwPl)
+rozklad
+class(rozklad)
+```
+
+Funkcja `svytable()` działa podobnie do funkcji `table()`, jednak uwzględnia schemat doboru próby (wagi). Konsekwentnie pomija też w zwracanych wynikach braki danych (i nie da się tego zmienić - nie ma argumentu analogicznego do `exclude`).
+
+Obiekty zwracane przez `svytable()` zachowują się dosyć podobnie do obiektów klasy *table*, np.
+
+```{r}
+as.data.frame(prop.table(rozklad))
+```
+
+**Proste przekształcenia zmiennych**
+
+Przekodujmy odpowiedzi *wymijające* i odmowy na braki danych.
+
+```{r}
+ess2012warstwPl = 
+  update(ess2012warstwPl,
+         happy = factor(happy,
+                        exclude = c("Refusal", "Don't know", "No answer")))
+svytable(~happy, ess2012warstwPl)
+```
+
+### Nieco bardziej złożony schemat
+
+W odniesieniu do Polski możemy pozyskać dane potrzebne do opisania w wyczerpujący sposób schematu doboru próby do badania ESS.
+
+```{r}
+opisSchematuPl = read.csv2("dane/ESS6PL_dobor_proby.csv")
+head(opisSchematuPl)
+```
+
+  - `idno`, `cntry` - zmienne identyfikacyjne, po których łączymy;
+  - `stratex1` - identyfikator warstwy;
+  - `czy_50plus` - czy warstwa obejmuje miasto powyżej 50 tys. mieszkańców?
+  - `n_psu` - liczba jednostek I stopnia losowanych w ramach warstwy;
+  - `psu` - identyfikator jednostki losowania I stopnia;
+  - `prob_psu` prawdopodobieństwo doboru jednostki losowania I stopnia;
+  - `prob_ind` prawdopodobieństwo doboru w ramach jednostki losowania I stopnia;
+  - `pop15_stratex1` - liczebność populacyjna warstwy;
+
+Porównajmy jeszcze, jak wyglądają te informacje dla respondentów z warstw obejmujących miasta powyżej 50 tys. mieszkańców (gdzie dobór był jednostopniowy i w ramach warstw prosty) i pozostałych (gdzie najpierw losowano miejscowość, będącą jednostką losowania I stopnia, a w ramach wylosowanych miejscowości osoby).
+
+```{r}
+head(subset(opisSchematuPl, czy_50plus))
+head(subset(opisSchematuPl, !czy_50plus))
+```
+
+Widzimy, że aby w kompatybilny sposób opisać obie te sytuacje, w warstwach obejmujących miasta powyżej 50 tys. mieszkańców poszczególne osoby traktowane są jako jednostki losowania I stopnia, a w odniesieniu do II stopnia zakładamy, że *nic się tam nie dzieje* (w tym sensie, że jest on deterministyczny).
+
+Przyłączmy te informacje do wyników z Polski i zdefiniujmy schemat.
+
+```{r}
+# żeby się dobrze łączyło, warto jeszcze uzgodnić poziomy czynnika
+opisSchematuPl$cntry = factor(opisSchematuPl$cntry,
+                              levels = levels(ess2012$cntry))
+ess2012Pl = merge(subset(ess2012, cntry == "Poland"), opisSchematuPl)
+# samo definiowanie schematu
+ess2012Pl = svydesign(ids = ~psu + idno, probs = ~prob_psu + prob_ind,
+                      strata = ~stratex1, data = ess2012Pl)
+ess2012Pl
+```
+
+Czy uzyskamy ten sam rozkład *szczęśliwości*?
+
+```{r}
+cbind(ess2012Pl = svytable(~happy, ess2012Pl),
+      ess2012warstw = svytable(~happy, subset(ess2012warstw, cntry == "Poland")))
+```
+
+Coś się nie zgadza...
+
+Pamiętacie, że jak mówiliśmy o estymatorach, to *pierwotnym*, od którego wyprowadzane są inne był estymator sumy populacyjnej? Otóż `svytable()` domyślnie zwraca oszacowania populacyjne - oczywiście o ile przy definiowaniu schematu podaliśmy prawdopodobieństwa albo prawdziwe *sampling weights*.
+
+Możemy sobie z tym poradzić na jeden z dwóch sposobów - przechodząc na rozkłady częstości, albo używając argimentu `Ntotal` do podania sumy, do jakiej mają się sumować liczebności, przy wywołaniu `svytable()`.
+
+```{r}
+cbind(ess2012Pl = prop.table(svytable(~happy, ess2012Pl)),
+      ess2012warstw = prop.table(svytable(~happy, subset(ess2012warstw,
+                                                         cntry == "Poland"))))
+cbind(ess2012Pl = svytable(~happy, ess2012Pl, Ntotal = nrow(ess2012Pl$variables)),
+      ess2012warstw = svytable(~happy, subset(ess2012warstw, cntry == "Poland")))
+```
+
+A jednak tak samo!
+
+## Badanie PISA 2012
+
+Zajmijmy się teraz badaniem, w którym wykorzystywane są wagi replikacyjne.
+
+Wyniki z badania PISA 2012 ograniczyłem tylko do krajów, które przystąpiły do UE w XXI wieku - zbiór i tak jest dosyć duży.
+
+```{r}
+(load("dane/PISA2012.RData"))
+head(dictStudent2012)
+#str(student2012)
+table(student2012$CNT)
+str(student2012weights)
+```
+
+### Definiowanie schematu replikacyjnego
+
+Zmienne opisujące wagi replikacyjne bywają dostarczane w postaci oddzielnego zbioru, bywają też umieszczone razem ze zmiennymi opisującymi wyniki badania. W naszym przypadku znajdują się w oddzielnym obiekcie. Połączmy jeden z drugim, aby mieć pewność, że wiersze nie są w nich w innej kolejności.
+
+```{r}
+student2012 = merge(student2012, student2012weights)
+rm(student2012weights)
+```
+
+Do definiowania schematów wykorzystujących różne rodzaje wag replikacyjnych służy funkcja `svrepdesign()`, której najważniejsze argumenty to:
+
+    - `repweights` pozwala wskazać, której zmienne opisują wagi replikacyjne; może to być formuła (zwykle mało użyteczne, bo zmiennych jest wiele), wyrażenie regularne, do którego będą pasować nazwy tych zmiennych lub ramka danych z tymi zmiennymi (musimy jednak mieć pewność, że jej wiersze są w tej samej kolejności, co dane);
+    - `weights` podaje nazwę zmiennej zawierającej *sampling weights* (lub *wagi analityczne*);
+    - `combined.weights` pozwala wskazać, czy zmienne zawierające wagi replikacyjne (wynikające ze schematu replikacji) zostały już wcześniej przemnożone przez *sampling weights*, czy też nie;
+      - uwaga, nawet jeśli `combined.weights=TRUE`, wciąż musimy podać argument `weights`;
+    - `type` służy do podania typu wag (BRR, jacknife, bootstrap);
+    - `rho` służy do podania wartości parametru Fay'a (jeśli posługujemy się wagami typu BRR);
+    - `data` służy do przekazania ramki danych z danymi (i ew. również wagami).
+
+W przypadku badania PISA 2012 mamy do czynienia z:
+
+  - Wagami typu BRR z poprawką Fay'a równą 0,5.
+  - Nazwy zmiennych opisujących wagi replikacyjne zaczynają się od *W_FSTR*.
+  - Zmienna opisująca *sampling weights* to `W_FSTUWT`.
+
+Czy zmienne zawierające wagi replikacyjne zostały już przemnożone przez *sampling weights*? Sprawdźmy:
+
+```{r}
+summary(student2012$W_FSTR1)
+```
+
+Możemy więc zdefiniować schemat replikacyjny:
+
+```{r}
+student2012rep = svrepdesign(repweights = "^W_FSTR", weights = ~W_FSTUWT,
+                             type = "BRR", rho = 0.5, combined.weights = TRUE,
+                             data = student2012)
+student2012rep
+```
+
+Do porównań na przyszłość zdefiniujmy sobie również schematy: 1) prosty oraz 2) warstwowany po krajach, z uwzględnieniem *design weights*, ale nie doboru wielostopniowego.
+
+```{r}
+student2012prosty = svydesign(ids = ~1, weights = ~1, data = student2012)
+student2012warstw = svydesign(ids = ~1, strata = ~CNT, weights = ~W_FSTUWT,
+                              data = student2012)
+```
+
+# 2. Estymacja typowych statystyk
+
+Pakiet *survey* udostępnia kilka funkcji pozwalających obliczać najczęściej wykorzystywane statystyki:
+
+  - średnie: `svymean()`;
+  - kwantyle: `svyquantile()`;
+  - wariancje i kowariancje: `svyvar()`;
+
+Każda z tych funkcji domyślnie oblicza również błędy standardowe szacowanych parametrów.
+
+Funkcje wymagają podania:
+
+  - zmiennych, dla których mają być obliczone statystyki - w postaci prawostronnej formuły;
+    - może ich być kilka na raz; 
+  - obiektu ze schematem doboru próby (zawierającego te zmienne);
+  - jeśli w zmiennych występują braki danych, wywołanie funkcji zwróci `NA` (schematy opisane *explicite*) lub zakończy się błędem (schematy replikacyjne);
+    - chyba że użyjemy argumentu `na.rm=TRUE`;
+    - jeśli podaliśmy kilka zmiennych oraz argument `na.rm=TRUE`, przed obliczeniem parametróW, **z danych usunięte zostaną wszystkie wiersze, w których występuje brak danych w chociaż jednej z podanych zmiennych**;
+
+## Kilka analiz na polskich danych ESS
+
+W ESS mamy zestaw pytań o zaufanie do różnego rodzaju instytucji:
+
+```{r}
+subset(dictEss2012, grepl("^trst", dictEss2012$variable))
+svytable(~trstprl, ess2012Pl)
+```
+
+Postąpimy z nimi nieco brutalnie i na potrzeby analizy potraktujemy je jako zmienne ciągłe (odpowiedzi *wymijające* przekodowując na braki danych). Odpowiednio przekształcone zmienne znajdują się już w naszych danych (choć nie ma ich w ramce danych ze *słownikiem*): ich nazwy mają dodany przyrostek *_mod*.
+
+```{r}
+zmienne = grep("^trst.*_mod", names(ess2012), value = TRUE)
+zmienne
+svytable(~trstprl_mod, ess2012Pl)
+```
+
+### Średnie
+
+Oszacujmy srednie wartości deklaracji nt. zaufania do poszczególnych instytucji w Polsce:
+
+```{r}
+zmienneFormula = make.formula(zmienne)
+(srProsty = svymean(zmienneFormula,
+                    subset(ess2012prosty, cntry == "Poland"), na.rm =  TRUE))
+(srDweight = svymean(zmienneFormula,
+                     subset(ess2012dweight, cntry == "Poland"), na.rm =  TRUE))
+(srPspwght = svymean(zmienneFormula,
+                     subset(ess2012pspwght, cntry == "Poland"), na.rm =  TRUE))
+(srSch = svymean(zmienneFormula, ess2012Pl, na.rm =  TRUE))
+```
+
+Łatwiej będzie nam to zobaczyć na wykresie. Poniżej trochę przekształceń (nie całkiem eleganckich), które zbierają powyższe wyniki w jedną ramkę danych.
+
+```{r}
+srednie = rbind(
+  cbind(ftable(srProsty), schemat = "prosty"),
+  cbind(ftable(srDweight), schemat = "dweight"),
+  cbind(ftable(srPspwght), schemat = "pspwght"),
+  cbind(ftable(srSch), schemat = "pełen schemat"))
+colnames(srednie) = c("srednia", "blad.standardowy", "schemat")
+srednie = data.frame(variable = rownames(srednie), srednie,
+                     row.names = 1:nrow(srednie), stringsAsFactors = FALSE)
+srednie$srednia = as.numeric(srednie$srednia)
+srednie$blad.standardowy = as.numeric(srednie$blad.standardowy)
+
+etykiety = subset(dictEss2012, grepl("^trst", dictEss2012$variable))
+etykiety$label = sub("^.*(in|in the) ", "", etykiety$label)
+etykiety$variable = paste0(etykiety$variable, "_mod")
+srednie = merge(etykiety, srednie)
+```
+
+Teraz możemy rysować.
+
+```{r}
+ggplot(srednie, aes(srednia, blad.standardowy, shape = schemat, colour = schemat)) +
+  geom_point(size = 3) +
+  facet_grid(label ~ .) + 
+  scale_x_continuous(name = "średnia w Polsce", limits = c(2, 8)) + 
+  scale_y_continuous(name = "błąd standardowy średniej", limits = c(0, NA)) +
+  ggtitle("Zaufanie do instytucji w Polsce")
+```
+
+Jak widać, **w odniesieniu do zmiennych opisujących zaufanie**, w Polsce dla oszacowań punktowych generalnie nie ma znaczenia, jak zdefiniujemy schemat. Nie opisując w pełen sposób schematu doboru zaniżamy co prawda oszacowania błędów standardowych... ale i to nie są ogromne różnice.
+
+Gdybyśmy potrzebowali wyznaczyć przedziały ufności dla oszacowanych średnich, możemy zrobić to łatwo przy pomocy funkcji `confint()`, np:
+
+```{r}
+(puSrednieSch = confint(srSch, level = 0.95))
+str(puSrednieSch)
+```
+
+### Funkcja svyby()
+
+Czy podobne wyniki jak przed chwilą uzyskamy w każdym kraju?
+
+Wybierzmy jedną zmienną, za to rozpatrzmy wszystkie kraje. Teraz będziemy w stanie przyjrzeć się tylko wpływowi zastosowanych wag - w odniesieniu do innych krajów niż Polska nie mamy danych pozwalających w wyczerpujący sposób opisać schematy losowania.
+
+Funkcja `svyby()` pozwala w wygodny sposób prowadzić analizy w podgrupach:
+
+  - jako pierwszy argument podajemy (typowo w formie prawostronnej formuły) zmienne, które mają być analizowane;
+  - jako drugi argument (typowo w formie prawostronnej formuły) zmienne wyznaczające podział na podgrupy;
+  - jako trzeci argument podajemy obiekt ze schematem doboru próby;
+  - jako czwarty argument funkcję, która ma być wykorzystana do analiz;
+  - ew. dalsze argumenty (koniecznie trzeba je nazywać) zostaną przekazane do ww. funkcji;
+
+```{r}
+zmienna = "trstplc_mod"
+(srProsty = svyby(make.formula(zmienna), ~cntry, ess2012prosty, svymean, na.rm = TRUE))
+(srDweight = svyby(make.formula(zmienna), ~cntry, ess2012dweight, svymean, na.rm = TRUE))
+(srPspwght = svyby(make.formula(zmienna), ~cntry, ess2012pspwght, svymean, na.rm = TRUE))
+
+srednie = rbind(
+  cbind(srProsty, schemat = "prosty"),
+  cbind(srDweight, schemat = "dweight"),
+  cbind(srPspwght, schemat = "pspwght")
+)
+ggplot(srednie, aes_string(zmienna, "se", shape = "schemat", colour = "schemat")) +
+  geom_point(size = 2) +
+  facet_wrap(~cntry) + 
+  scale_x_continuous(name = "średnia", limits = c(1, 9)) + 
+  scale_y_continuous(name = "błąd standardowy średniej", limits = c(0, NA)) +
+  ggtitle(zmienna)
+#View(srednie)
+```
+
+Ważenie wciąż niewiele zmienia w zakresie oszacowań punktowych (**uwaga! w dużej mierze wynika to z faktu, że operujemy na dużej liczbie obserwacji**, przy prowadzeniu analiz na mniejszych podgrupach te różnice mogłyby być dużo większe), choć miewa spory wpływ na szacowane błędy standardowe (które zwiększają się w związku z występowaniem nierównych wag).
+
+Funkcja `confint()` działa również na obiektach zwracanych przez `svyby()`:
+
+```{r}
+confint(srPspwght, level = 0.95)
+```
+
+Z kolei funkcji `ftable()` możemy użyć, by nieco inaczej sformatować macierz z wynikami (co może być pomocne, gdy chcemy ją gdzieś przekleić):
+
+```{r}
+ftable(srPspwght)
+```
+
+### Kiedy ważenie robi dużą różnicę?
+
+Rozpatrzmy jednak jeszcze jedną zmienną: liczba członków gospodarstwa domowego (respondenta). W postaci przekształconej na zmienną ciągłą (z czynnika) nazywa się ona w naszym zbiorze `hhmmb_mod`.
+
+```{r}
+zmienna = "hhmmb_mod"
+(srProsty = svyby(make.formula(zmienna), ~cntry, ess2012prosty, svymean, na.rm = TRUE))
+(srDweight = svyby(make.formula(zmienna), ~cntry, ess2012dweight, svymean, na.rm = TRUE))
+(srPspwght = svyby(make.formula(zmienna), ~cntry, ess2012pspwght, svymean, na.rm = TRUE))
+
+srednie = rbind(
+  cbind(srProsty, schemat = "prosty"),
+  cbind(srDweight, schemat = "dweight"),
+  cbind(srPspwght, schemat = "pspwght")
+)
+ggplot(srednie, aes_string(zmienna, "se", shape = "schemat", colour = "schemat")) +
+  geom_point(size = 2) +
+  facet_wrap(~cntry) + 
+  scale_x_continuous(name = "średnia") + 
+  scale_y_continuous(name = "błąd standardowy średniej", limits = c(0, NA)) +
+  ggtitle(zmienna)
+#View(srednie)
+```
+
+Dlaczego w jednych krajach widać tak wyraźne różnice, a  w innych nie?
+
+```{r}
+# we Francji różnica dla `hhmmb_mod` jest znaczna
+round(cor(subset(ess2012, cntry == "France")
+          [, c("dweight", "pspwght", "trstplc_mod", "hhmmb_mod")],
+          use = "pairwise.complete.obs"), 2)
+# a w Polsce nie
+round(cor(subset(ess2012, cntry == "Poland")
+          [, c("dweight", "pspwght", "trstplc_mod", "hhmmb_mod")],
+          use = "pairwise.complete.obs"), 2)
+```
+
+### (Ko)wariancje i odchylenia standardowe
+
+Funkcja `svyvar()` charakteryzuje się tym, że estymuje macierz kowariancji pomiędzy podanymi zmiennymi, choć łatwo może nam to umknąć, gdyż metoda `print()` dla zwracanego przez nią obiektu wyświetla jedynie wariancje (a więc wartości z przekątnej wyestymowanej i zwróconej przez funkcję macierzy).
+
+Jako atrybut obiektu otrzymujemy również macierz z oszacowaniami wariancji estymatoróW (ko)wariancji.
+
+```{r}
+zmienneFormula
+(warSch = svyvar(zmienneFormula,
+                 subset(ess2012Pl, cntry == "Poland"), na.rm =  TRUE))
+str(warSch)
+```
+
+Chcąc przejść do oszacowań odchyleń standardowych musimy spierwiastkować przekątną zwróconej macierzy:
+
+```{r}
+(odchStdSch = diag(warSch)^0.5)
+```
+
+### Kwantyle
+
+Do obliczania kwantyli służy funkcja `svyquantile()`. Warto odnotować, że posiada ono kilka specyficznych argumentów umożliwiających szacowanie rozsądniejszych przedziałów ufności dla kwantyli (te oparte na aproksymacji normalnej są adekwatne tylko dla kwantyli bliskich 0,5) - nie będziemy ich tu jednak omawiać.
+
+```{r}
+svyquantile(~hhmmb_mod, ess2012Pl, c(0.25, 0.5, 0.75), na.rm = TRUE)
+svyquantile(zmienneFormula, ess2012Pl, c(0.25, 0.5, 0.75), na.rm = TRUE)
+```
+
+### Tabele krzyżowe
+
+Przy pomocy funkcji `svytable()` możemy też tworzyć tabele krzyżowe, a przy pomocy funkcji `svychisq()` przeprowadzić test niezależności chi-kwadrat (w różnych odmianach proponowanych do wykorzystania przy złożonych schematach doboru próby - p. dokumentacja tejże funkcji).
+
+```{r}
+# brutalnie pozbądźmy się jednego nieużywanego poziomu w zmiennej `gndr`
+ess2012Pl = update(ess2012Pl, gndr = factor(gndr))
+# i sama analiza
+tab = svytable(~rlgdgr + gndr, ess2012Pl, Ntotal = nrow(ess2012Pl$variables))
+round(100 * addmargins(prop.table(tab, 2), 1), 1)
+
+summary(tab)
+svychisq(~rlgdgr + gndr, ess2012Pl, statistic = "saddlepoint")
+```
+
+## Własności doboru zespołowego na przykładzie badania PISA
+
+Przyjmuje się, że dobór wielostopniowy, a tym bardziej zespołowy, są typowo mniej efektywne od doboru prostego. W praktyce kwestia ta jest jednak złożona i bardzo zależy od tego, jak podobne są do siebie badani (lub badane obiekty) w ramach zespołów (lub jednostek losowania I stopnia). Rozpatrzmy dwie zmienne z badania PISA 2012:
+
+```{r}
+zmienne = c("OUTHOURS", "PV1MATH")
+subset(dictStudent2012, variable %in% zmienne)
+```
+
+Niestety analizując wyniki testu umiejętności matematycznych nie będziemy tu uwzględniać błędu pomiaru testu - wymagałoby to analiz z wykorzystaniem metody *plausible values* (czy też, używając innej nomenklatury, wielokrotnych imputacji), a nie mamy czasu, żeby się z nią zapoznawać. Nie będzie to jednak mieć jakościowego wpływu na nasze rozważania.
+
+```{r}
+zmienna = "PV1MATH"
+(srProsty = svyby(make.formula(zmienna), ~CNT, student2012prosty, svymean, na.rm = TRUE))
+(srWarst = svyby(make.formula(zmienna), ~CNT, student2012warstw, svymean, na.rm = TRUE))
+(srRep = svyby(make.formula(zmienna), ~CNT, student2012rep, svymean, na.rm = TRUE))
+
+srednie = rbind(
+  cbind(srProsty, schemat = "prosty"),
+  cbind(srWarst, schemat = "warstwowy"),
+  cbind(srRep, schemat = "BRR")
+)
+ggplot(srednie, aes_string(zmienna, "se", shape = "schemat", colour = "schemat")) +
+  geom_point(size = 2) +
+  facet_wrap(~CNT) + 
+  scale_x_continuous(name = "średnia") + 
+  scale_y_continuous(name = "błąd standardowy średniej", limits = c(0, NA)) +
+  ggtitle(zmienna)
+#View(srednie)
+```
+
+Jak widać w blisko połowie analizowanych krajów błędy standardowe oszacowane poprawnie, z wykorzystaniem metod replikacyjnych, okazują się zauważalnie większe, niż szacowane przy zastosowaniu standardowych (lecz nieadekwatnych) technik, tak jak dla doboru prostego. Jednak zdarzają się wyjątki - na Słowenii zastosowanie wag replikacyjnych prowadzi do zmniejszenia się szacowanej wielkości błędu standardowego o połowę (w porównaniu do szacowania jak dla doboru prostego).
+
+```{r}
+zmienna = "OUTHOURS"
+(srProsty = svyby(make.formula(zmienna), ~CNT, student2012prosty, svymean, na.rm = TRUE))
+(srWarst = svyby(make.formula(zmienna), ~CNT, student2012warstw, svymean, na.rm = TRUE))
+(srRep = svyby(make.formula(zmienna), ~CNT, student2012rep, svymean, na.rm = TRUE))
+
+srednie = rbind(
+  cbind(srProsty, schemat = "prosty"),
+  cbind(srWarst, schemat = "warstwowy"),
+  cbind(srRep, schemat = "BRR")
+)
+ggplot(srednie, aes_string(zmienna, "se", shape = "schemat", colour = "schemat")) +
+  geom_point(size = 2) +
+  facet_wrap(~CNT) + 
+  scale_x_continuous(name = "średnia") + 
+  scale_y_continuous(name = "błąd standardowy średniej", limits = c(0, NA)) +
+  ggtitle(zmienna)
+#View(srednie)
+```
+
+W przypadku zmiennej `OUTHOURS`, opisującej tygodniową liczbę godzin dodatkowej nauki poza szkołą, we wszystkich analizowanych krajach błędy standardowe szacowane metodą BRR są niższe niż szacowane tak, jak dla doboru prostego. Najwyraźniej uczniowie w ramach szkół bardzo różnią się ze względu tą cechę (podczas gdy średnie tej zmiennej na poziomie szkół różnią się od siebie niewiele).
+
+## Sumy populacyjne
+
+Widzieliśmy już, jak przy pomocy funkcji `svytable()` można estymować rozkład liczebności zmiennej w populacji (o ile definiując schemat doboru próby podaliśmy prawdopodobieństwa lub *sampling weights*). Dla zmiennej ciągłej możemy też wyestymować sumę wartości tej zmiennej w populacji. Np. łączną liczbę godzin nauki tygodniowo poza szkołą dla wszystkich *piętnastoletnich* uczniów danego kraju:
+
+```{r}
+svyby(~OUTHOURS, ~CNT, student2012rep, svytotal, na.rm = TRUE)
+```
+
+# 3. Wizualizacja danych ze złożonych schematów doboru próby
+
+## Funkcje pakietu survey
+
+Funkcje graficzne pakietu *survey* działają w oparciu o *klasyczną* grafikę R - pakiet *graphics*. W związku z tym wszystkie argumenty sterujące wyglądem poszczególnych elementów wykresy są w ich przypadku identyczne, jak w analogicznych funkcjach pakietu *graphics*: `hist()`, `boxplot()` i `plot()`/`points()`. Utworzone wykresy mogą też być uzupełniane o dalsze elementy przy użyciu innych funkcji pakietu *graphics*.
+
+### Histogramy
+
+```{r}
+svyhist(~trstplc_mod, ess2012Pl, breaks = seq(-0.5, 10.5, 1), col = "red")
+grid(col = grey(0.5))
+abline(v = 5, lwd = 2)
+```
+
+### Wykresy skrzynkowe
+
+```{r}
+svyboxplot(trstplc_mod ~ cntry, ess2012warstw, main = "trstplc_mod",
+           col = "green", horizontal = TRUE)
+text(5, 1:nlevels(ess2012warstw$variables$cntry),
+     levels(ess2012warstw$variables$cntry), col = "red", font = 2)
+```
+
+### Wykresy rozrzutu
+
+Funkcja `svyplot()`, w odróżnieniu od wcześniejszych, posiada więcej specyficznych dla siebie argumentów. Przede wszystkim argument `style` pozwala wybrać jeden ze sposobów reprezentowania danych na wykresie:
+
+  - `style = "bubble"` - poszczególne obserwacje reprezentowane są przez punkty, których wielkość jest proporcjonalna do wagi przypisanej danej obserwacji; bardzo ograniczona kontrola nad wyglądem punktów (właściwie tylko wybór koloru); użyteczne tylko przy niewielkiej liczbie obserwacji;
+  - `style = "transparent"` - poszczególne obserwacje reprezentowane są przez punkty, których przeźroczystość jest proporcjonalna do wagi przypisanej danej obserwacji; bardzo ograniczona kontrola nad wyglądem punktów (właściwie tylko wybór koloru); użyteczne tylko przy niewielkiej liczbie obserwacji;
+  - `style = "subsample"` - na wyresie nie są rysowane dane, jakie mamy w obiekcie ze schematem, lecz wygenerowana na ich podstawie *prosta próba z populacji*; większa swoboda decydowania o wyglądzie punktów, ale wciąż użyteczne tylko dla małych danych;
+  - `style = "hex"` i `style = "greyhex"` - wykres typu *mapa ciepła*, w którym powierzchnia dzielona jest równomiernie na obszary (tu: szcześciokąty foremne), których kolor odpowiada zagęszczeniu obserwacji (sumy wag) w granicach poszczególnych obszarów; do działania wymagają zainstalowania pakietu *hexbin*.
+  
+Należy też zwrócić uwagę, że pierwsza zmienna podawana w formule umieszczona zostanie na osi Y, a druga na osi X (tak, jakby specyfikować model regresji).
+
+```{r}
+svyplot(PV1MATH ~ OUTHOURS, subset(student2012rep, CNT == "Poland"),
+        style = "bubble", xlab = "OUTHOURS", ylab = "PV1MATH")
+grid()
+abline(svyglm(PV1MATH ~ OUTHOURS,
+              design = subset(student2012rep, CNT == "Poland")))
+svyplot(PV1MATH ~ OUTHOURS, subset(student2012rep, CNT == "Poland"),
+        style = "transparent", xlab = "OUTHOURS", ylab = "PV1MATH")
+svyplot(PV1MATH ~ OUTHOURS, subset(student2012rep, CNT == "Poland"),
+        style = "subsample", xlab = "OUTHOURS", ylab = "PV1MATH",
+        pch = 16, col = "red")
+```
+
+## Funkcje pakietu ggplot2
+
+Obiektów zawierających opis schematu doboru próby nie możemy użyć wprost jako źródeł danych dla funkcji pakietu *ggplot2*, jednak ich element `variables` już jak najbardziej. Wywołując funkcje pakietu *ggplot2* (a nawet konkretnie funkcję `aes()`) będziemy musieli deklarować, że na potrzeby rysowania wykresu nie chcemy zliczać wierszy w danych, lecz sumować przypisane do nich wagi.
+
+### Rozkład jednej zmiennej i rozkłady warunkowe
+
+Funkcji `geom_bar()`, czy `geom_hist()` używamy dodając w wywołaniu `aes()` argument `weights`, któremu przypisujemy wartość wag. Oczywiście jeśli podamy tu *sampling weights*, na osi Y wykresu otrzymamy w efekcie szacowane liczebności populacyjne.
+
+```{r}
+ggplot(ess2012Pl$variables, aes(trstplc,
+                                weight = 1 / (prob_psu * prob_ind))) +
+  geom_bar(fill = "red") + coord_flip()
+ggplot(ess2012Pl$variables, aes(trstplc_mod,
+                                weight = 1 / (prob_psu * prob_ind))) +
+  geom_bar()
+ggplot(ess2012Pl$variables, aes(trstplc_mod,
+                                weight = 1 / (prob_psu * prob_ind))) +
+  geom_histogram()
+```
+
+Chcąc uzyskać rozkłady procentowe, musimy najpierw przygotować tabelę z rozkładem przy pomocy funkcji `svytable()`, przekształcić ją na pożądany rozkład częstości (lub rodzinę warunkowych rozkładów częstości) i dopiero podać jako argument do `ggplot()`.
+
+```{r}
+(tab = svytable(~trstplc + cntry, ess2012warstw))
+ggplot(as.data.frame(100 * prop.table(tab, 2)),
+       aes(cntry, fill = trstplc, weight = Freq)) +
+  geom_bar() + ylab("%") + coord_flip()
+```
+
+Również wykorzystując funkcje `geom_boxplot()` lub `geom_violin()` korzystamy z argument `weights` w wywołaniu `aes()`.
+
+```{r warning=FALSE}
+ggplot(ess2012warstw$variables,
+       aes(cntry, trstplc_mod, weight = dweight)) +
+  geom_boxplot() + coord_flip()
+ggplot(ess2012warstw$variables,
+       aes(cntry, trstplc_mod, weight = dweight)) +
+  geom_violin() + coord_flip()
+```
+
+### Wykresy rozrzutu
+
+Wykorzystując `geom_point()` możemy na podstawie wag dobierać wielkość lub kolor punktów.
+
+```{r}
+ggplot(subset(student2012rep, CNT == "Poland")$variables,
+       aes(OUTHOURS, PV1MATH, size = W_FSTUWT)) +
+  geom_point()
+ggplot(subset(student2012rep, CNT == "Poland")$variables,
+       aes(OUTHOURS, PV1MATH, alpha = W_FSTUWT)) +
+  geom_point()
+```
+
+Zwykle bardziej użytecznie będzie jednak skorzystać z wykresów typu *mapa ciepła*, znów posługując się argumentem `weight` w wywołaniu `aes()`.
+
+```{r}
+ggplot(subset(student2012rep, CNT == "Poland")$variables,
+       aes(OUTHOURS, PV1MATH, weight = W_FSTUWT)) +
+  geom_bin2d(binwidth = c(1, 10))
+ggplot(subset(student2012rep, CNT == "Poland")$variables,
+       aes(OUTHOURS, PV1MATH, weight = W_FSTUWT)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon")
+```
+
+Możemy też w analogiczny sposób wykorzystać `geom_smooth()`, pamiętając jedynie, że zwrócone przez tę funkcję oszacowania błędów standardowych (a w konsekwencji *powierzchni ufności*) nie będą uwzględniać efektywności schematu doboru próby, więc lepiej powstrzymać się od wykorzysatania ich na wykresie.
+
+```{r}
+ggplot(subset(student2012rep, CNT == "Poland")$variables,
+       aes(OUTHOURS, PV1MATH, weight = W_FSTUWT)) +
+  geom_bin2d(binwidth = c(1, 10)) +
+  geom_smooth(method = "lm", colour = "red", se = FALSE)
+```
+
+# 4. Analizy regresji (uogólniony model liniowy)
+
+## Kontekst i kilka ogólnych wniosków
+
+Tradycyjnie, w badaniach wykorzystujących w pełny sposób wnioskowanie statystyczne uwzględniające złożony schemat doboru próby badawczej, przedmiotem zainteresowania były parametry populacyjne rozkładów poszczególnych zmiennych, a nie zależności między zmiennymi. Zależnościami takimi interesowano się, ale w dosyć specyficznym kontekście - jako czymś dającym możliwość bardziej precyzyjnego wnioskowania o parametrach populacyjnych jednych zmiennych, jeśli wziąć pod uwagę dostępne informacje o wartościach innych zmiennych, które są z nimi powiązane. W związku z tym w literaturze poświęconej analizie danych z uwzględnienim złożonych schematów doboru próby regresja wprowadzana jest zwykle w kontekście estymatorów regresyjnych sum populacyjnych, a nie jako sposób badania związków pomiędzy zmiennymi.
+
+Przystępując do analizy regresji w celu badania związków między zmiennymi z wykorzystaniem danych z prób dobranych w sposób złożony należy zdawać sobie sprawę, że złożony schemat doboru próby może wpływać na prowadzone analizy regresji na dwa sposoby:
+
+  1. Poprzez róźnicę efektywności związaną z wykorzystaniem schematu zespołowego lub wielostopniowego oraz warstwowania.
+  2. Poprzez nierówne prawdopodobieństwa wyboru jednostek do próby - a więc i nieróWne wagi.
+  
+Pierwszy aspekt powinien zostać uwzględniony poprzez wykorzystanie tzw. estymatorów *sandwich* (które mogą być postrzegane jako rodzaj linearyzacji Taylora), w formie adekwatnej do zastosowanego schematu, lub metod replikacyjnych do szacowania wielkości błędów standardowych.
+
+Drugi aspekt wymaga nieco dokładniejszego rozważenia.
+
+  - Zauważmy, że jeżeli chcemy interpretować model regresji w sposób przyczynowy, to jego parametry nie powinny zależeć od rozkładów brzegowych analizowanych zmiennych (tzn. jeśli model jest *prawdziwy*, to zmiana wartości predyktora w danej zbiorowości powinna wpływać na odpowiednią zmianę rozkładu zmiennej zależnej).
+    - Ponieważ zastosowanie (lub nie) ważenia interpretuje się właśnie w kategoriach dostosowania przewidywanego poziomu (rozkładu) analizowanych zmiennych, nie powinno ono wpływać na szacowane parametry modelu regresji.
+    - Chyba że model regresji cierpi na problem pominiętych predyktorów (i nie może być interpretowany w sposób przyczynowy).
+    
+Wynikają z tego dwa wnioski:
+
+  1) Uwzględnienie ważenia w modelowaniu regresji w pierwszej kolejności odgrywa rolę *robustness check*.
+    - Jeśli po uwzględnieniu ważenia nic poważnego się w modelu nie zmienia, jest to pośrednia **przesłanka** na rzecz tego, że jest on dobrze wyspecyfikowany.
+    - Jeśli się zmienia, to znaczy, że należy rozważyć uzupełnienie go o dodatkowe predyktory (a przynajmniej należałoby się zastanowić, jak chcemy interpretować jego wyniki).
+  2) Uwzględnienie ważenia ma podobny wpływ na parametry modelu regresji, co włączenie do modelu jako dodatkowych predyktorów zmiennych, na podstawie których ustalana jest wartość wag (prawdopodobieństw wyboru do próby).
+    - W związku z tym, gdy obserwujemy, że ważenie zmienia parametry modelu, warto rozważyć włączenie do modelu regresji właśnie zmiennych, z którymi powiązane są wagi. Pozwala to opisać ich oddziaływanie w sposób bardziej przejrzysty.
+
+## Funkcja svyglm()
+
+Funkcji `svyglm()` używa się w sposób analogiczny do `glm()`, z tym że zamiast argumentu `data` występuje tu argument `design`. Można przy jej pomocy estymować modele ściśle liniowe, logitowe, probitowe i Poissona.
+
+Pakiet *survey* **nie** zapewnia za to narzędzi do estymacji:
+
+  - Modelu dla ujemnego rozkładu dwumianowego.
+  - Modeli mieszanych efektów.
+
+```{r}
+m1 = svyglm(PV1MATH ~ OUTHOURS, design = subset(student2012rep, CNT == "Poland"))
+summary(m1)
+```
+
+Obiekty zwracane przez funkcję `svyglm()` w wielu kontekstach zachowują się jak typowe modele będące efektem wywołwania funkcji `glm()` lub `lm()`. W szczególności:
+
+  - Posiadają zdefiniowane metody `summary()`, `coef()`, `predict()`, `vcov()`, które działają tak samo, jak dla bardziej typowych modeli regresji.
+  - Współpracują z funkcjami z pakietu *car*.
+  - Współpracują (od niedawna) z funkcjami pakietu *effects*.
+  - Współpracują z funkcjami `tidy()` i `augument()` z pakietu *broom*.
+  
+Dotyczą ich jednak również pewne ograniczenia:
+
+  - Jako estymowane w oparciu o pseudowiarygodność nie mają zdefiniowanej metody `anova()`.
+    - W pakietem *survey* mamy jednak funkcję `regTermTest()`, która pozwala wygodnie testować hipotezy o istotności uwzględnienia w modelu czynników. W tym samym celu można też użyć funkcji `Anova()` z pakietu *car*.
+  - Z analogicznych powodów nie jest dla nich zwracane R-kwadrat, ani wartość BIC. Nieco inaczej jest też raportowany AIC.
+    - Z tego powodu nie działa w odniesieniu do nich funkcja `glance()` z pakietu *broom*.
+    - Warto przeczytać: T. Lumley & A. Scott. 2015. AIC and BIC for Modeling with Complex
+Survey Data. *Journal of Survey Statistics and Methodology* 3(1), 1-18.
+  - Metoda `plot()` jest dostępna, ale zróżnicowanie wag nie jest reprezentowane na wykresach rozrzutu; zupełnie nie jest też brane pod uwagę przy wykresie *kwantyl-kwantyl* (zresztą ten ostatni element diagnostyki jest przy nierównych wagach kłopotliwy formalnie).
+
+**Czy nasz model jest wrażliwy na użycie schematu?**
+
+```{r}
+m1p = svyglm(PV1MATH ~ OUTHOURS, design = subset(student2012prosty, CNT == "Poland"))
+summary(m1)$coef
+summary(m1p)$coef
+```
+
+Jeśli chodzi o wartość parametru nachylenia, to różnice są znikome. Różnicą w wartości stałej regresji możemy się nie przejmować (zresztą i tak nie jest zbyt duża). Znaczne są za to różnice wielkości błędów standardowych, przy czym wykorzystanie informacji o schemacie doboru pozwala akurat je zredukować.
+
+### Trochę bogatszy model regresji
+
+Zbadajmy przebieg związków pomiędzy intensywnością pozaszkolnych zajęć związanych z nauką a wynikami testu z matematyki w podziale na płeć (`ST04Q01`) i poszczególne kraje.
+
+```{r}
+m2 = svyglm(PV1MATH ~ OUTHOURS * ST04Q01 * CNT, design = student2012rep)
+summary(m2)
+```
+
+Żeby zobrazować wyniki, użytecznie będzie posłużyć się pakietem *effects*.
+
+```{r}
+library(effects)
+plot(Effect(c("OUTHOURS", "ST04Q01", "CNT"), m2),
+     x.var = "OUTHOURS", multiline = TRUE)
+```
+
+Czy mamy podstawy by twierdzić, że różnice wartości współczynników nachylenia związanych ze zmienną `OUTHOURS` między płciami nie są w analizowanych krajach takie same?
+
+```{r}
+regTermTest(m2, ~OUTHOURS:ST04Q01+OUTHOURS:ST04Q01:CNT)
+```
+
+## A co z korelacją?
+
+W pakiecie *survey* punktowe oszacowanie korelacji możemy obliczyć korzystając z faktu, że jako taką możemy interpretować wartość standaryzowanego współczynnika w regresji (z jedną zmienną niezależną).
+
+```{r}
+# niestety nie możemy wystandaryzować w ramach formuły, korzystając z funkcji scale()
+# tylko musimy zrobić to "na piechotę"
+designTemp = 
+  subset(student2012rep, CNT == "Poland" & !is.na(PV1MATH) & !is.na(OUTHOURS))
+designTemp = 
+  update(designTemp,
+         PV1MATH = (PV1MATH - svymean(~PV1MATH, designTemp)) /
+           svyvar(~PV1MATH, designTemp)[1, 1]^0.5,
+         OUTHOURS = (OUTHOURS - svymean(~OUTHOURS, designTemp)) /
+           svyvar(~OUTHOURS, designTemp)[1, 1]^0.5)
+# można liczyć
+mKor1 = svyglm(PV1MATH ~ 0 + OUTHOURS, design = designTemp)
+mKor2 = svyglm(OUTHOURS ~ 0 + PV1MATH, design = designTemp)
+summary(mKor1)$coef
+summary(mKor2)$coef
+rm(mKor1, mKor2, designTemp)
+```
+
+Oszacowania punktowe z obu modeli są takie same, ale błąd standardowy i istotność już nie! Przy złożonym schemacie doboru zależą one bowiem od związków, z charakterystykami schematu: siły związku zmiennej zależnej ze zmienną opisującą wagi oraz stopnia, w jakim zmienna zależna *grupuje* się w ramach zespołów (jednostek losowania I stopnia).
+
+W związku z tym przy analizach prowadzonych z wykorzystaniem danych z prób dobranych w sposób złożony generalnie unika się obliczania korelacji.
+
+# 5. Poststratyfikacja
+
+Poststratyfikacja (w szerokim rozumieniu tego terminu) to zestaw technik statystycznych mających na celu taką zmianę wag przypisywanych poszczególnym obserwacjom w próbie, aby dopasować wartości wybranych parametróW pewnych zmiennych estymowane na podstawie tej próby do znanych wartości populacyjnych. Zaliczane tu metody to:
+
+  - *Klasyczna* poststratyfikacja dla zmiennych kategorialnych oparta na uzgadnianiu całego rozkładu zmiennej (lub łącznego rozkładu kilku zmiennych).
+  - Ważenie wieńcowe (*raking*) - bardziej elastyczna wersja *klasycznej* poststratyfikacji, ułatwiająca jednoczesne uwzględnienie w procedurze kilku zmiennych.
+  - Kalibracja (*calibration*), w ramach której można dążyć do dopasowania do znanych wartości dowolnie zdefiniowanych parametrów, również dla zmiennych ciągłych (w szczególności średnich lub sum populacyjnych).
+  
+Poststratyfikacja dosyć powszechnie postrzegana jest jako remedium na problem nierównomiernej realizacji prób badawczych (np. respondenci o pewnych charakterystykach: młodsi, lepiej wykształceni, mieszkańcy dużych miast, są mniej skłonni do wyrażania zgody na udzielenie wywiadu), jednak w praktyce jest to w dużej mierze myślenie życzeniowe.
+
+  1. W praktyce typowo jesteśmy w stanie wykorzystać w postsratyfikacji tylko bardzo wąski zakres zmiennych *demograficznych*: płeć, wiek, region zamieszkania, które ze zmiennymi, które nas interesują (w analizie) są często w dosyć luźnych związkach.
+  2. Zastosowanie poststratyfikacji co prawda może wpłynąć na redukację obciążenia estymatorów (jeśli zmienne wykorzystane w poststratyfikacji są skorelowane z prawdopodobieństwem odmowy udziału w badaniu), jednak równocześnie wpływa również na wariancję tych estymatorów - i wpływ ten może być negatywny.
+    - Zastosowanie poststratyfikacji zwykle zwiększa zróżnicowanie wartości wagprzypisanych obserwacjom i w ten sposób zwiększa wariancję estymatoróW.
+    - Na rzecz zmniejszenia wariancji estymatorów będzie jednak oddziaływało, jeśli wagi po poststratyikacji są silniej (pozytywnie) związane z wartościami zmiennej, którą chcemy analizować, niż były przed posstratyfikacją. Dla wielu zmiennych taki pozytywny efekt jest jednak znikomy i nie równoważy zwiększenia wariancji estymatora w wyniku większego zróżnicowania wag.
+    - Jeśli mamy dwa estymatory, z których jeden jest mniej obciążony, ale ma większą wariancję, a drugi jest bardziej obciążony, ale ma mniejszą wariancję, trudno powiedzieć, który z nich jest *lepszy* (można by szacować ich błąd średniokwadratowy, ale tego na podstawie pojedynczej próby nie jesteśmy w stanie zrobić).
+  3. Typowy sposób wykorzystania poststratyfikacji w badaniach społecznych pomija analizowanie wpływu jej zastosowania na wariancję estymatorów.
+    - Nie wystarczy po prostu użyć wag poststratyikacyjnych zamiast *sampling weights* lub *wag analitycznych*.
+    
+## Postsratyfikacja w pakiecie *survey*
+
+Pakiet *survey* umożliwia przeprowadzenie zarówno *klasycznej* poststratyfikacji (`postStratify()`), ważenia wieńcowego (`rake()`), jak i kalibracji (`calibrate()`). Niestety w praktyce często nie jest to zbyt wygodne. Np. w badaniu ESS poststratyfikację trzeba przeprowadzić dla każdego kraju oddzielnie - zestawy zmiennych wykorzystanych do poststratyfikacji różnią się między niektórymi krajami. W praktyce uniemożliwia to późniejsze posługiwanie się obiektem obejmującym wyniki z wszystkich krajów jednocześnie.
+
+**Przeprowadźmy poststratyfikację dla Polski.**
+
+Do poststratyfikacji polskiej próby z badania ESS 2012 zastosujemy metodę wag wieńcowych (*raking*), w ramach której wykorzystywane są dwie zmienne: `demogr` opisująca liczebność kategorii wiekowych i `regionR` opisujaca liczbę ludności mieszkającejw poszczególnych regionach.
+
+Zacznijmy od wczytania zbioru danych z tymi zmiennymi i dołączenia ich do zbioru z wynikami ESS 2012 w Polsce.
+
+```{r}
+danePoststrat = read.csv2("dane/ESS6PL_zm_poststrat.csv")
+danePoststrat$cntry = factor(danePoststrat$cntry, levels = levels(ess2012$cntry))
+ess2012PlDane = merge(subset(ess2012, cntry == "Poland"), danePoststrat)
+summary(ess2012PlDane[, c("demogr", "regionR")])
+```
+
+Następnie musimy zdefiniować ramki danych zawierające rozkłady populacyjne tych zmiennych.
+
+```{r}
+(PL2012demogr = setNames(as.data.frame(matrix(c(
+  11, 278.304087435086,
+  12, 260.726261173464,
+  13, 281.731322784886,
+  21, 265.001935768819,
+  22, 260.790488015623,
+  23, 404.445904822121
+), ncol = 2, byrow = TRUE)), c("demogr", "Freq")))
+(PL2012regionR = setNames(as.data.frame(matrix(c(
+  11, 146.27576768455,
+  12, 271.471246522951,
+  21, 161.204848783597,
+  22, 238.24816668013,
+  31, 115.760280482555,
+  32, 101.095691362023,
+  33,  72.7490479027425,
+  34,  56.3166309146778,
+  41, 158.085521170637,
+  42,  73.963564946446,
+  43,  50.4211591795123,
+  51, 139.876942324461,
+  52,  45.0279285484576,
+  61,  96.6084936295843,
+  62,  66.9178577447834,
+  63, 103.976852122893
+), ncol = 2, byrow = TRUE)), c("regionR", "Freq")))
+```
+
+Teraz definiujemy obiekt ze schematem doboru próby - tu zastosujemy powszechnie stosowane w socjologii podejście uproszczone, w którym jedynie używamy zmiennej `dweight` jako substytytu *wagi analitycznej* (definiując obiekt zeschematem w pakiecie survey - jako substytut *sampling weights*).
+
+```{r}
+(ess2012dweightPl = svydesign(ids = ~1, weights = ~dweight, data = ess2012PlDane))
+```
+
+Na obiekcie ze zdefinowanym schematem możemy przeprowadzić poststratyfikację.
+
+```{r}
+(ess2012poststratPl = rake(ess2012dweightPl,
+                           sample.margins = list(~demogr, ~regionR),
+                           population.margins = list(PL2012demogr, PL2012regionR)))
+str(ess2012poststratPl$postStrata)
+```
+
+Zauważmy, że w obiekcie po przeprowadzeniu poststratyfikacji przechowywane są zarówno stare, jak i nowe wagi - jest to konieczne do szacowania wpływu poststratyfikacji na wariancję estymatorów.
+
+Utwórzmy też obiekt zawierający schemat z *naiwną* poststratyfikacją, tzn. wykorzystujący wagi postsratyfikacyjne po prostu w roli *wag analitycznych*.
+
+```{r}
+(ess2012npoststratPl = svydesign(ids = ~1, weights = ~wps,
+                                 data = cbind(ess2012PlDane, 
+                                              wps = weights(ess2012poststratPl))))
+```
+
+Teraz możemy coś przeanalizować...
+
+```{r}
+(zmienne = grep("^trst.*_mod", names(ess2012), value = TRUE))
+svymean(make.formula(zmienne), ess2012dweightPl, na.rm = TRUE)
+svymean(make.formula(zmienne), ess2012poststratPl, na.rm = TRUE)
+svymean(make.formula(zmienne), ess2012npoststratPl, na.rm = TRUE)
+```
+
+...ale jak widać wyniki niemal się od siebie nie różnią.
+
+```{r}
+plot(weights(ess2012dweightPl), weights(ess2012poststratPl))
+grid()
+abline(0, 1)
+cor(weights(ess2012dweightPl), weights(ess2012poststratPl))
+```
+
+W dużej mierze bierze się to z faktu, że wagi wynikajće ze schematu doboru i wagi poststratyfikacyjne po prostu niezbyt się od siebie różnią (co z koleiwynika z tego, że badanie ESS jest w Polsce bardzo porządnie - i w efekcie dosyć *równomiernie* - realizowane).
+
+```{r}
+round(cor(ess2012PlDane[, zmienne],
+          cbind(dweight = weights(ess2012dweightPl),
+                poststrat = weights(ess2012poststratPl)),
+          use = "complete.obs"), 2)
+```
+
+A do tego wagi zarówno przed jak i po poststratyfikacji są właściwie nieskorelowane z analizowanymi zmiennymi.
