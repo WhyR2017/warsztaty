@@ -1,0 +1,269 @@
+##tWORZENIE WYKRESÓW - pakiet epade - proste wykresy słupkowe
+install.packages("epade")
+library(plotrix)
+library(epade)
+table(baza2$alpfpe)
+bar.plot.wtd(baza2$alpfpe, w=baza2$dweight, prozent=TRUE, wall=4)
+
+###pakiet ggplot2
+#gramatyka wykresów
+install.packages("ggplot2")
+library(ggplot2)
+install.packages("scales")
+library(scales)
+#podstawa - dane do wykresu - ramka do wykresu
+
+a<-ggplot(baza2, aes(x=alpfpe), weights=dweight, main="Stosunek do imigrantów")
+
+# tworzenie wykresu słupkowego
+a+ geom_bar()
+
+#usunięcie brakow danych
+a<-ggplot(data=subset(baza2, !is.na(alpfpe)), aes(x=alpfpe), weights=dweight, 
+          main="Stosunek do imigrantów")
+# tworzenie wykresu słupkowego
+a+ geom_bar()
+
+#dodwanie tytułów
+a+ geom_bar()+xlab("Stosunek do imigrantów")
+
+#dodwanie procentów
+d<-a+ geom_bar(aes(y = (..count..)/sum(..count..)))+ scale_y_continuous(labels=percent)+
+  xlab("Stosunek do imigrantów")+ylab("Wartość procentowa")
+d
+
+#zmiana kolorów
+d<-a+ geom_bar(aes(y = (..count..)/sum(..count..)), fill="#FF5000")+ 
+  scale_y_continuous(labels=percent)+
+  xlab("Stosunek do imigrantów")+ylab("Wartość procentowa")
+d
+
+#dodanie etykiet wartości
+library(scales)
+d+ geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), 
+              stat = "count", vjust = 5) 
+
+#dodawanie płci
+d<-a+ geom_bar(aes(y = (..count..)/sum(..count..), fill=gndr))+ 
+  scale_y_continuous(labels=percent)+
+  xlab("Stosunek do imigrantów")+ylab("Wartość procentowa")
+d
+
+#zmiana sposobu wyświetlania płci (1)
+d<-a+ geom_bar(aes(y = (..count..)/sum(..count..), fill=gndr), position=position_dodge())+ 
+  scale_y_continuous(labels=percent)+
+  xlab("Stosunek do imigrantów")+ylab("Wartość procentowa")
+d
+
+#zmiana sposobu wyświetlania płci (2)
+d<-a+ geom_bar(aes(y = (..count..)/sum(..count..), fill=gndr), position="fill")+ 
+  scale_y_continuous(labels=percent)+
+  xlab("Stosunek do imigrantów")+ylab("Wartość procentowa")
+d
+
+#zamiania etykiet
+d<-a+ geom_bar(aes(y = (..count..)/sum(..count..), fill=gndr), position=position_dodge())+ 
+  scale_y_continuous(labels=percent)+xlab("Stosunek do imigrantów")+ylab("Wartość procentowa")+
+  scale_fill_discrete(name = "Legenda", breaks=c("Male", "Female"), labels = c("Mężczyzna", "Kobieta")) 
+d
+
+#zmiana szerokości na wykresie
+d<-a+ geom_bar(aes(y = (..count..)/sum(..count..), fill=gndr),width=.5, position=position_dodge())+ 
+  scale_y_continuous(labels=percent)+xlab("Stosunek do imigrantów")+ylab("Wartość procentowa")+
+  scale_fill_discrete(name = "Legenda", breaks=c("Male", "Female"), labels = c("Mężczyzna", "Kobieta")) 
+d
+
+#obracanie wykresu
+d+coord_flip() 
+
+
+#wykres:szkrzynka-wąsy
+library(scales)
+b<-ggplot(data=subset(baza_Pl, !is.na(smctmbe)), aes(y=agea, x=smctmbe), weights=dweight)
+b+ geom_boxplot() 
+
+#wybieranie tylko PL z bazy
+baza_Pl<-baza2[baza2$cntry=="PL",]
+
+baza_pl2=filter(baza2,cntry=="PL")
+
+#wykres tylko dla PL z dodaniem płci
+b<-ggplot(data=subset(baza_Pl, !is.na(smctmbe)), aes(y=agea, x=smctmbe), weights=dweight)
+b+ geom_boxplot(aes(color=gndr)) 
+
+##dodanie wykresu rozrzutu punktów
+b<-ggplot(baza_Pl, aes(y=agea, x=smctmbe), weights=dweight)
+b+ geom_boxplot(aes(color=gndr)) +
+  geom_jitter(position=
+                position_jitter(h=.1))
+
+
+#dodanie kolejnej zmiennej- chldhm (Children living at home or not)
+ 
+table(baza_Pl$chldhm)
+
+b<-ggplot(data=subset(baza_Pl, !is.na(smctmbe)), aes(y=agea, x=smctmbe), weights=dweight)
+b+ geom_boxplot(aes(color=gndr)) + 
+  facet_grid(~chldhm)+xlab("Some cultures: much better or all equal")
+
+#inny - bardzo przydatny wykres do podawania rozkładów zmiennych
+b<-ggplot(data=subset(baza_Pl, !is.na(smctmbe)), aes(y=agea, x=smctmbe), weights=dweight)
+b+ geom_violin()
+ 
+
+#wykres wiolinowy z inną zmieną - Allow many or few Jewish people to come and live in country
+table(baza_Pl$aljewlv)
+b<-ggplot(data=subset(baza_Pl, !is.na(aljewlv)), aes(y=agea, x=aljewlv, color=aljewlv), weights=dweight)
+b+ geom_violin()
+
+b+ geom_violin()+scale_color_brewer(palette="Dark2")
+
+#dodwanie wypełnienia
+table(baza_Pl$aljewlv)
+b<-ggplot(data=subset(baza_Pl, !is.na(aljewlv)), aes(y=agea, x=aljewlv, fill=aljewlv), weights=dweight)
+b+ geom_violin()
+
+#usunięcie legendy
+b+ geom_violin()+ theme(legend.position="none")
+
+#włóżmy do tego jeszcze wykres skrzynkowy
+b+ geom_violin()+ geom_boxplot(width=.1, outlier.size=0)+ scale_fill_brewer(palette="Spectral")
+
+#dodajmy inną statystyke - medianę
+b+ geom_violin()+ stat_summary(fun.y=median, geom="point", size=2, color="red")
+
+#wykres rozrzutu
+b<-ggplot(baza2, aes(x=agea, y=weight), weights=dweight)
+b
+
+b+geom_point(aes(color=cntry))
+
+#w podziale na płeć
+b<-ggplot(data=subset(baza2,!is.na(gndr)),aes(x=agea, y=weight), weights=dweight)
+b+geom_point(aes(color=cntry), na.rm=FALSE)+facet_grid(~gndr)
+
+#w podziale na palenie papierosów
+table(baza2$cgtsmke)
+b+geom_point(aes(color=cntry), na.rm=FALSE)+facet_grid(gndr~cgtsmke)
+
+
+table(baza2$alcfreq)
+b+geom_point(aes(color=cntry), na.rm=FALSE)+facet_grid(gndr~alcfreq)
+
+# ********** ANALIZA KORESPONDENCJI ********************************************************
+table(baza2$eatveg)
+
+library("FactoMineR")
+library("factoextra")
+library(gplots)
+
+#wykres bąbelkowy
+
+A<-rprop(wtd.table(baza2$aljewlv, baza2$cntry, weights=baza2$dweight), digits=1, total=FALSE)
+
+balloonplot(A, main ="Wykres 1", xlab ="", ylab="",
+            label = FALSE, show.margins = FALSE, colsrt=90, las=2)
+
+#wybór zmiennych do analizy
+baza4<-subset(baza2, select=c("cntry", "eatveg", "dweight" ))
+CA(baza4, ncp=5, row.w=baza2$dweight, graph=TRUE)
+
+class(baza4$cntry)
+#funkcja przeprowadzająca analizę
+wynik<-CA(A, ncp=5,graph=TRUE)
+wynik
+#podsumowanie modelu
+print(wynik)
+summary(wynik)
+
+#ile wymiarów potrzebujemy do naszego końcowego modelu? 
+#pomocne są w tym celu wartości własne (eigenvalue) - "mówią" one ile informacji 
+#o zmiennych zawierają poszczególne osie
+
+eig.val <- get_eigenvalue(wynik)
+eig.val
+
+#kryterium: M. Bendixen 2003
+
+#alternatywnym sposobem, aby ocenić ile wymiarów pozostawić w analizie jest wykres "łokieć" /Scree Plot
+fviz_screeplot(wynik, addlabels = TRUE, ylim = c(0, 80))
+
+#reguła M. T. Bendixen 1995
+#jeśli dane losowe:  1/(nrow(A)-1) oraz 1/(ncol(A)-1)
+
+#można sobie również pomóc dodając linie prezentująca przeciętną wartość własną
+
+fviz_screeplot(wynik) +
+  geom_hline(yintercept=33.33, linetype=2, color="red")
+
+#przedstawienie informacji na wykresie - biplot
+fviz_ca_biplot(wynik, repel = TRUE)
+
+#która interpretacja jest lepsza - wierszowa vs kolumnowa
+row <- get_ca_row(wynik)
+row
+
+# Contributions to the principal components
+head(row$contrib)
+
+#wizualizacja tylko punktów wierszowych - pozwala nam lepiej ocenić ich reprezentacje i wzajemne zalezności
+fviz_ca_row(wynik, repel = TRUE)
+#reprezentacja wierszowa - jak dobrze punkty są reprezentowane w przestrzenie
+#wartości 0-1 są OK
+head(row$cos2, 4)
+fviz_ca_row(wynik, repel = TRUE, col.row = "cos2")
+
+#inny sposób oceny reprezentacji
+library("corrplot")
+corrplot(row$cos2, is.corr=FALSE)
+#można również sporządzić wykres słupkowy
+fviz_cos2(wynik, choice = "row", axes = 1:2)
+
+#teraz czas na ocenę w jaki sposób wymiary są determinowane przez poszczególne punkty wierszowe
+head(row$contrib)
+
+#i inny sposób prezentacji
+library("corrplot")
+corrplot(row$contrib, is.corr=FALSE) 
+
+#i jeszcze prezentacja na wykresie w jaki sposób poszczególne punkty reprezentują dany wymia (tylko dla 1 wymiaru)
+fviz_contrib(wynik, choice = "row", axes = 1, top = 10)
+
+#konieczna jest również ocena punktów kolumnowych
+col <- get_ca_col(wynik)
+col
+
+# Coordinates of column points
+col$coord
+# Quality of representation
+col$cos2
+# Contributions
+col$contrib
+
+#wykres prezentujący jakość reprezentacji
+fviz_ca_col(wynik, col.col = "cos2",repel = TRUE)
+
+#i jeszcze wykres słupkowy
+fviz_cos2(wynik, choice = "col", axes = 1)
+
+# i na koniec jeszcze interpretacja modelu
+fviz_ca_biplot(wynik, repel = TRUE)
+
+#wykres asymetryczny
+fviz_ca_biplot(wynik, 
+               map ="colprincipal", arrow = c(TRUE, TRUE),
+               repel = TRUE)
+
+#reguła Michael Greenacre 2013 -
+#punkty, które wnoszą bardzo mało do rozwiązania są prezentowane blisko środka
+#wiersze: główne współrzędne
+#kolumny: standardowe współrzędne pomnożone przez pierwiastek kwadratowy masy
+  
+  fviz_ca_biplot(wynik, map ="rowgreen", arrow = c(TRUE, FALSE),
+                 repel = TRUE)
+  
+#i jeszcze łatwy spsób jak dowiedzieć się, które punkty lepiej reprezentują 1 wymiar
+  res.desc <- dimdesc(wynik, axes = 1)
+  head(res.desc[[1]]$row, 4)
+  head(res.desc[[1]]$col, 4)
+  
