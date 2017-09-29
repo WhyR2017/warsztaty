@@ -17,6 +17,10 @@ W ramach warsztatu zobaczymy jakie możliwości daje MLR przy tworzeniu różneg
 5. Rozszerzanie MLR o własny algorytm.
 6. Inne ciekawe elementy pakietu, podsumowanie.
 
+## Materiały 
+
+Materiały z warsztatu dostępne są w repozytorium [pzawistowski/mlr-workshop](https://github.com/pzawistowski/mlr-workshop).
+
 ## Wymagane pakiety 
 
 W ramach warsztatu korzystać będziemy głównie z `mlr`, `tidyverse` oraz notatników w R markdown.
