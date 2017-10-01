@@ -1,0 +1,55 @@
+nazwa;spec;alien;wdensity;lai;canopy_height;leaf_dmc;leaf_mass;leaf_size;seed_mass;pochodzenie;iglasty;shade_tolerance;drought_tolerance;waterlogging_tolerance;disturbance_index
+jod³a;Abies alba;rodzimy;0.353;6.866666667;50;319.3;5.395;41.25;79.2;Europe;iglasty;4.6;1.81;1.02;-1.991
+klon polny;Acer campestre;rodzimy;0.525;4.186774189;13.42142857;360.5;184.2079463;4741.5;54.34828235;Europe;lisciasty;3.18;2.93;1.89;-1.912
+klon jes.;Acer negundo;obcy;0.416;4.781608567;11.5;300.3511155;179.5525767;3705.141772;41.211;North America;lisciasty;3.47;3.03;2.75;-1.525
+klon zw.;Acer platanoides;rodzimy;0.5165;5.305483056;26.25;274;144.1443904;5193.766667;100.828;Europe;lisciasty;4.2;2.73;1.46;-1.963
+jawor;Acer pseudoplatanus;rodzimy;0.509;5.107080287;27.33333333;262.5;133.7771465;8365.175;69.2004;Europe;lisciasty;3.73;2.75;1.1;-1.969
+klon srebrzysty;Acer saccharinum;rodzimy;0.44;4.866952567;40;275.1050559;124.4833353;2703.401775;39.14;North America;lisciasty;3.6;2.88;3.37;-1.08786
+kasztanowiec;Aesculus hippocastanum;obcy;0.5;4.707527173;20;251.5;176.5232646;6528.7;7708.65;Europe;lisciasty;3.43;2.82;1.39;-1.41982
+olsza cz.;Alnus glutinosa;rodzimy;0.419666667;5.341666667;14.33333333;248;139.335789;3462.95;2.3111;Europe;lisciasty;2.71;2.22;3.9;-1.852
+olsza sz.;Alnus incana;rodzimy;0.439;2.773333333;14;213.84;91.47;2723.31;0.55;Europe;lisciasty;2.3;1.89;2.84;-1.859
+brzoza br.;Betula pendula;rodzimy;0.5125;3.110882353;27;273;120.5541376;1181.1;0.188353846;Europe;lisciasty;2.03;1.85;1.67;-1.879
+brzoza om.;Betula pubescens;rodzimy;0.525;2.83;25;291.440775;123.2480032;2152.818009;0.219966667;Europe;lisciasty;1.85;1.27;2.98;-1.92
+grab;Carpinus betulus;rodzimy;0.693;8.73;17.875;258.685;62.93;2268.52;41.81531429;Europe;lisciasty;3.97;2.66;1.65;0
+orzesznik;Carya ovata;obcy;0.64;4.765867219;25.29892381;272.2314774;181.2026576;5503.10808;2524.277579;North America;lisciasty;3.4;3;1.38;-1.2937025
+kasztan jadalny;Castanea sativa;obcy;0.463333333;4.874;30;265.3333333;178.1637648;7259.433333;2891.920805;Europe;lisciasty;3.15;3.46;1.32;-1.43237
+oliwnik;Elaeagnus angustifolia;obcy;0.481666667;5.047635233;3.65;298.2069714;181.1538393;3369.829952;149.511;Europe;lisciasty;1.35;4.47;1.52;-1.006975
+buk;Fagus sylvatica;rodzimy;0.585;5.855302013;32.1875;309.25;107.2803984;2027.675;177.0824;Europe;lisciasty;4.56;2.4;1.02;0
+jesion wynios³y;Fraxinus excelsior;rodzimy;0.57;4.29;26.14285714;256.5;133.4162246;1426.54;58.4213475;Europe;lisciasty;2.66;2.5;2.7;0
+jesion pens.;Fraxinus pennsylvanica;obcy;0.53;3;20;300.0192333;167.1528552;3555.922297;35.7;North America;lisciasty;3.11;3.85;2.98;-1.07142
+orzech;Juglans regia;obcy;0.558333333;4.160327452;15;240;183.2858762;3909.7;4753;Europe;lisciasty;2.27;2.98;1.42;-0.5447225
+modrzew;Larix decidua;obcy;0.474;3.42;35;279.75;111.9606309;20.125;6.24;Europe;iglasty;1.46;2.31;1.1;0
+morwa;Morus alba;obcy;0.601333333;3.748855744;5.5;310.7428929;194.9739887;3325.693333;3.1;East Asia;lisciasty;1.35;2.88;1.27;-0.67771
+œwierk;Picea abies;rodzimy;0.37;6.028503937;50;276.7862012;54.73611446;801.2052381;6.663666667;Europe;iglasty;4.45;1.75;1.22;-1.956
+sosna Banksa;Pinus banksiana;obcy;0.4;3.211315789;22.03486667;285.732594;171.8351903;3297.075502;376.2858323;North America;iglasty;1.36;4;1;-0.84105
+limba;Pinus cembra;rodzimy;0.511408619;3.2;15;271.2878202;151.1856862;3456.956036;231.125;Europe;iglasty;2.87;3.01;1.04;-1.13856
+sosna czarna;Pinus nigra;obcy;0.417;11.465;40;276.4390143;75.79840946;1174.904438;23.9;Europe;iglasty;2.1;4.38;1.39;-1.595
+sosna zw.;Pinus sylvestris;rodzimy;0.3954;3.757735849;30;283.9862798;101.2434101;1364.271604;17.975;Europe;iglasty;1.67;4.34;2.63;-1.945
+sosna wejmutka;Pinus strobus;obcy;0.34;5.306666667;34.5;299.1142857;10.81;65.94285714;7.572;North America;iglasty;3.21;2.29;1.03;-1.20727
+topola bia³a;Populus alba;rodzimy;0.353;3.659969084;23.25;293.0879643;124.2272831;1834.438664;0.12;Europe;lisciasty;2.3;2.67;1.84;-0.60632
+topola czarna;Populus nigra;rodzimy;0.353;4.071801119;25;304.965;240.4625;2784.625;0.8;Europe;lisciasty;2.46;2.2;3.7;0
+osika;Populus tremula;rodzimy;0.3735;2.91;19.5;369.835;165.02125;2513.3125;0.1;Europe;lisciasty;2.22;2.85;2.07;0
+czereœnia;Prunus avium;rodzimy;0.474;4.492978154;12.24;265.5336;187.2134191;4083.722047;390.0449714;Europe;lisciasty;3.33;2.66;1.19;0
+œliwa;Prunus domestica;rodzimy;0.491315333;4.494443851;3.166666667;301.6429679;232.5341036;3915.549697;479.1299558;Europe;lisciasty;1.93;2.9;1.02;0
+czeremcha zw.;Prunus padus;rodzimy;0.465;4.3275122;8;334.3175;183.1416667;3044.558;137.5;Europe;lisciasty;3.26;1.93;3.19;-0.70252
+czeremcha amer.;Prunus serotina;obcy;0.47;3.611870268;20.625;308.2533333;159.106;3396.25;88.1;North America;lisciasty;2.46;3.02;1.06;-0.7159625
+daglezja;Pseudotsuga menziesii;obcy;0.427666667;12.64229508;65;284.4566238;86.47807619;1298.020136;288.3052132;North America;iglasty;2.78;2.62;1.79;-1.2771
+grusza;Pyrus communis;rodzimy;0.632;4.466983822;20;272.3127833;158.1439982;3077.366624;25;Europe;lisciasty;2.72;2.73;1.15;0
+d¹b burg.;Quercus cerris;obcy;0.7;4.837142857;35;306;176.5886214;2919.4;3033.35;Europe;lisciasty;2.55;4.29;1.29;-0.74654
+d¹b bezszyp.;Quercus petraea;rodzimy;0.57;4.991666667;36.14444444;281.25;167.7000531;3500.325;974.7;Europe;lisciasty;2.73;3.02;1.2;-1.961
+d¹b szyp.;Quercus robur;rodzimy;0.574714286;4.0275;40;280;156.350689;2073.533333;3487.466667;Europe;lisciasty;2.45;2.95;1.89;0
+d¹b czerw.;Quercus rubra;obcy;0.56;3.9975;25;285;192.3467543;5084.9;3360.1;North America;lisciasty;2.75;2.88;1.12;-0.9343125
+robinia;Robinia pseudoacacia;obcy;0.6746;2.89;21.99475357;284.6575;181.909619;3160.646709;1154.206496;North America;lisciasty;1.72;4.11;1.07;0
+wierzba bia³a;Salix alba;rodzimy;0.284;5.515141453;15.16666667;298.615;63.3575;782.125;0.12;Europe;lisciasty;1.99;2;4.1;0
+wierzba krucha;Salix fragilis;rodzimy;0.36;4.383247451;10.66666667;293.9340821;136.2030959;1893.278076;0.117;Europe;lisciasty;1.42;1.23;3.94;-0.67261
+jarz¹b m¹czny;Sorbus aria;rodzimy;0.6415;4.477235933;10.75;292.7175;232.175;5548.375;128.6498333;Europe;lisciasty;3;3.55;1.32;-1.866
+jarz¹b posp.;Sorbus aucuparia;rodzimy;0.629;4.759030813;12.75;268.75;152.5842225;637.05;121.4390444;Europe;lisciasty;2.73;2.11;1.76;-1.913
+jarz¹b szwedzki;Sorbus intermedia;rodzimy;0.500629333;4.438025602;8.25;235.72;294.43;5382.635;583.716;Europe;lisciasty;2.66;2.21;1.04;-0.64796
+jarz¹b brekinia;Sorbus torminalis;rodzimy;0.611;4.605434034;14.83333333;246.915;172.855;6209.75;119.0188;Europe;lisciasty;3.38;3.74;1.04;-1.958
+cis;Taxus baccata;rodzimy;0.551;6.108573555;17.5;267.1666667;69.17730285;51.85;45.3264;Europe;iglasty;4.43;3.01;1.32;-1.924
+tuja;Thuja plicata;obcy;0.31;6.564348303;45;298.1352393;46.00017;589.0841036;1.24;North America;iglasty;4.73;2.23;1.01;-1.21169
+lipa dr.;Tilia cordata;rodzimy;0.422;6.123676372;21.66666667;270.6447941;89.34731148;0;50.55;Europe;lisciasty;4.18;2.75;1.83;-1.976
+lipa szer.;Tilia platyphyllos;rodzimy;0.422;5.451808985;30;206.195;160.91;6034.25;146.54;Europe;lisciasty;4;2.52;1.02;-1.974
+choina;Tsuga canadensis;obcy;0.38;8.095;20;285.0088857;90.56681476;1894.575925;316.0029337;North America;iglasty;4.83;1;1.25;-1.26813
+wi¹z górski;Ulmus glabra;rodzimy;0.5505;5.445515101;33.33333333;254.07;114.6725;3395.233333;11.48855;Europe;lisciasty;3.53;2.41;2.03;0
+wi¹z szyp.;Ulmus laevis;rodzimy;0.551;5.027738568;35;218.695;98.445;4532.25;8;Europe;lisciasty;3.67;1.45;2.83;0
