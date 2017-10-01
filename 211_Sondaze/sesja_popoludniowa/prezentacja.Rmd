@@ -339,4 +339,10 @@ Jako liczbę obserwacji (na potrzeby określania liczby stopni swobody) traktuje
     - ale działa tylko z modelami dla zmiennych ciągłych;
   - **srvyr** - nakładka umożliwiająca operowanie na obiektach pakietu *survey* przy pomocy funkcji znanych z pakietu *dplyr*;
 
+## Materiały o pakiecie survey
+
+  * Winietki dołączone do pakietu.
+  * Strona internetowa pakietu na [r-forge](http://r-survey.r-forge.r-project.org/survey/).
+  * Książka autora pakietu - Thomasa Lumleya [*Complex Surveys: A Guide to Analysis Using R*](http://r-survey.r-forge.r-project.org/svybook/).
+
 # Czas coś przeanalizować!
